@@ -21,9 +21,7 @@ export class GameObjectsService {
 
             if (object instanceof PlayerObject) {
                 this.calculatePlayer(object);
-            }
-
-            if (object instanceof BulletObject) {
+            } else if (object instanceof BulletObject) {
                 this.calculateBullet(object);
             }
         });
@@ -38,18 +36,26 @@ export class GameObjectsService {
         this.objects = this.objects.filter(object => !object.remove);
     }
 
-    calculatePlayer(player) {
+    calculatePlayer(player: PlayerObject) {
         if (player.isFiring()) {
             const bullet = GameObjectsHelperService.playerFire(player);
             this.addObject(bullet);
         }
     }
 
-    calculateBullet(bullet) {}
+    calculateBullet(bullet: BulletObject) {}
 
-    createPlayer(): PlayerObject {
-        const player = GameObjectsHelperService.createPlayer();
+    createPlayer(options): PlayerObject {
+        const player = GameObjectsHelperService.createPlayer(options);
         this.addObject(player);
         return player;
+    }
+
+    startAction(player: PlayerObject, event: KeyboardEvent) {
+        GameObjectsHelperService.startAction(player, event);
+    }
+
+    finishAction(player: PlayerObject, event: KeyboardEvent) {
+        GameObjectsHelperService.finishAction(player, event);
     }
 }

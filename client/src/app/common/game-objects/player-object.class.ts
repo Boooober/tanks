@@ -3,6 +3,8 @@ import { GameObjectAbstract } from './game-object-abstract.class';
 import { GameObjectProperties } from './game-object-properties.class';
 
 export const DEFAULT_PLAYER_OPTIONS = {
+    x: 0,
+    y: 0,
     deg: 45,
     speed: 2,
     width: 32,
@@ -60,13 +62,12 @@ export class PlayerObject extends GameObjectAbstract {
         }
 
         if (this.moveUp) {
-            this.x += this.speed * Math.sin(this.deg * (Math.PI / 180));
-            this.y -= this.speed * Math.cos(this.deg * (Math.PI / 180));
+            this.moveForward();
         }
 
         if (this.moveDown) {
-            this.x -= this.speed * Math.sin(this.deg * (Math.PI / 180));
-            this.y += this.speed * Math.cos(this.deg * (Math.PI / 180));
+            this.moveBackward();
+
         }
     };
 

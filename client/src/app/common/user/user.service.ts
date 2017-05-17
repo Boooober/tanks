@@ -15,17 +15,15 @@ export class UserService {
 
     constructor(private GameObjectsService: GameObjectsService) {}
 
-    createUnit() {
-        this.unit = this.GameObjectsService.createPlayer();
+    createUnit(options) {
+        this.unit = this.GameObjectsService.createPlayer(options);
     }
 
-    @HostListener('window:keyup', ['$event'])
-    onKeyUp($event) {
-        console.log($event);
+    startAction(event: KeyboardEvent) {
+        this.GameObjectsService.startAction(this.unit, event);
     }
 
-    @HostListener('window:keydown', ['$event'])
-    onKeyDown($event) {
-        console.log($event);
+    finishAction(event: KeyboardEvent) {
+        this.GameObjectsService.finishAction(this.unit, event);
     }
 }
