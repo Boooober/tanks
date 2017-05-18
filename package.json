@@ -8,7 +8,8 @@
     "start": "ng serve",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "server": "webpack --config server/webpack.config.js && node server/dist/main.js"
   },
   "private": true,
   "dependencies": {
@@ -21,8 +22,11 @@
     "@angular/platform-browser-dynamic": "^2.4.0",
     "@angular/router": "^3.4.0",
     "core-js": "^2.4.1",
+    "express": "^4.15.3",
+    "mongodb": "^2.2.26",
     "rxjs": "^5.0.1",
     "ts-helpers": "^1.1.1",
+    "ws": "^3.0.0",
     "zone.js": "^0.7.2"
   },
   "devDependencies": {
@@ -36,9 +40,10 @@
     "karma": "1.2.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-cli": "^1.0.1",
-    "karma-jasmine": "^1.0.2",
     "karma-coverage-istanbul-reporter": "^0.2.0",
+    "karma-jasmine": "^1.0.2",
     "protractor": "~5.1.0",
+    "ts-loader": "^2.0.3",
     "ts-node": "1.2.1",
     "tslint": "^4.3.0",
     "typescript": "~2.0.0"

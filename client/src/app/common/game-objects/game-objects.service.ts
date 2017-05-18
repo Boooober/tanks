@@ -1,61 +1,63 @@
 import { Injectable } from '@angular/core';
 
-import { Playground } from './playground.class';
+import { ConnectionService } from '../connection/connection.service';
+import { GameObjectProperties } from './game-object-properties.class';
+import { GameObjectsRendererService } from './game-object-renderer.service';
 import { BulletObject } from './bullet-object.class';
 import { PlayerObject } from './player-object.class';
-import { GameObjectAbstract } from './game-object-abstract.class';
-import { GameObjectsHelperService } from './game-objects-helper.service';
 
+export const ACTION_KEYS = {
+  37: 'moveLeft',
+  65: 'moveLeft',
+  39: 'moveRight',
+  68: 'moveRight',
+  38: 'moveUp',
+  87: 'moveUp',
+  40: 'moveDown',
+  83: 'moveDown',
+  32: 'doFire',
+  13: 'doFire'
+};
 
 @Injectable()
 export class GameObjectsService {
-    private objects: GameObjectAbstract[] = [];
 
-    draw(context: CanvasRenderingContext2D): void {
-        this.objects.forEach(object => object.draw(context));
+  private actionCache = {};
+
+  constructor(private ConnectionService: ConnectionService) {
+    this.ConnectionService.connect();
+  }
+
+  draw(context: CanvasRenderingContext2D, object: GameObjectProperties) {
+    switch (object.type) {
+      case 'bullet':
+        GameObjectsRendererService.drawBullet(context, object as BulletObject);
+        break;
+      case 'player':
+        GameObjectsRendererService.drawPlayer(context, object as PlayerObject);
+        break;
+      default:
     }
+  }
 
-    update(playground: Playground): void {
-        this.objects.forEach(object => {
-            object.update(playground);
-
-            if (object instanceof PlayerObject) {
-                this.calculatePlayer(object);
-            } else if (object instanceof BulletObject) {
-                this.calculateBullet(object);
-            }
-        });
-        this.clearObjects();
+  startAction(event: KeyboardEvent) {
+    const action = GameObjectsService.getActionToSend(event);
+    if (action && this.actionCache[action] !== true) {
+      this.actionCache[action] = true;
+      this.ConnectionService.startAction(action)
     }
+  }
 
-    addObject(object: GameObjectAbstract): void {
-        this.objects.push(object);
+  finishAction(event: KeyboardEvent) {
+    const action = GameObjectsService.getActionToSend(event);
+    if (action && this.actionCache[action] !== false) {
+      this.actionCache[action] = false;
+      this.ConnectionService.finishAction(action)
     }
+  }
 
-    clearObjects(): void {
-        this.objects = this.objects.filter(object => !object.remove);
-    }
-
-    calculatePlayer(player: PlayerObject) {
-        if (player.isFiring()) {
-            const bullet = GameObjectsHelperService.playerFire(player);
-            this.addObject(bullet);
-        }
-    }
-
-    calculateBullet(bullet: BulletObject) {}
-
-    createPlayer(options): PlayerObject {
-        const player = GameObjectsHelperService.createPlayer(options);
-        this.addObject(player);
-        return player;
-    }
-
-    startAction(player: PlayerObject, event: KeyboardEvent) {
-        GameObjectsHelperService.startAction(player, event);
-    }
-
-    finishAction(player: PlayerObject, event: KeyboardEvent) {
-        GameObjectsHelperService.finishAction(player, event);
-    }
+  private static getActionToSend(event: KeyboardEvent): string {
+    const {keyCode} = event;
+    return ACTION_KEYS[keyCode];
+  }
 }

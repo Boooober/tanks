@@ -1,66 +1,54 @@
-import { Component, ElementRef, OnInit, ViewChild, NgZone, HostListener } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, NgZone, HostListener, OnDestroy } from '@angular/core';
 import { AppComponent } from '../../app.component';
 import { GameObjectsService } from '../../common/game-objects/game-objects.service';
-import { UserService } from '../../common/user/user.service';
+import { ConnectionService } from '../../common/connection/connection.service';
+import { GameObjectProperties } from '../../common/game-objects/game-object-properties.class';
 
 @Component({
-    selector: 'app-game-area',
-    templateUrl: './game-area.component.html',
-    styleUrls: ['./game-area.component.scss']
+  selector: 'app-game-area',
+  templateUrl: './game-area.component.html',
+  styleUrls: ['./game-area.component.scss']
 })
-export class GameAreaComponent implements OnInit {
-    @ViewChild('gameArea') gameArea: ElementRef;
-    @ViewChild('tankImage') tankImage: ElementRef;
-    @ViewChild('tankFireImage') tankFireImage: ElementRef;
+export class GameAreaComponent implements OnInit, OnDestroy {
+  @ViewChild('gameArea') gameArea: ElementRef;
+  @ViewChild('tankImage') tankImage: ElementRef;
+  @ViewChild('tankFireImage') tankFireImage: ElementRef;
 
-    private context: CanvasRenderingContext2D;
+  private context: CanvasRenderingContext2D;
 
-    constructor(private NgZone: NgZone,
-                private App: AppComponent,
-                private UserService: UserService,
-                private GameObjectsService: GameObjectsService) {
-    }
+  private objectsSubscription;
 
-    ngOnInit() {
-        this.context = this.gameArea.nativeElement.getContext('2d');
-        this.requestNextFrame();
-        this.UserService.createUnit({
-            image: this.tankImage.nativeElement,
-            fireImage: this.tankFireImage.nativeElement
-        });
-    }
+  constructor(private App: AppComponent,
+              private ConnectionService: ConnectionService,
+              private GameObjectsService: GameObjectsService) {
+  }
 
-    render() {
-        const { width, height } = this.App;
+  ngOnInit() {
+    this.context = this.gameArea.nativeElement.getContext('2d');
+    this.objectsSubscription = this.ConnectionService.getObjectsStream()
+      .subscribe((objects: GameObjectProperties[]) => this.render(objects));
+  }
 
-        this.context.canvas.height = height;
-        this.context.canvas.width = width;
+  ngOnDestroy() {
+    this.objectsSubscription.unsubscribe()
+  }
 
-        this.GameObjectsService.update({ width, height });
+  render(objects: GameObjectProperties[]) {
+    const {width, height} = this.App;
 
-        this.context.clearRect(0, 0, width, height);
-        this.context.save();
-        this.context.beginPath();
-        this.GameObjectsService.draw(this.context);
-        this.context.restore();
-    }
+    this.context.canvas.height = height;
+    this.context.canvas.width = width;
+    this.context.clearRect(0, 0, width, height);
+    objects.forEach(object => this.GameObjectsService.draw(this.context, object));
+  }
 
-    private requestNextFrame() {
-        this.NgZone.runOutsideAngular(() => {
-            requestAnimationFrame(() => {
-                this.render();
-                this.requestNextFrame();
-            });
-        });
-    }
+  @HostListener('window:keyup', ['$event'])
+  private onKeyUp(event: KeyboardEvent) {
+    this.GameObjectsService.finishAction(event);
+  }
 
-    @HostListener('window:keyup', ['$event'])
-    private onKeyUp(event: KeyboardEvent) {
-        this.UserService.finishAction(event);
-    }
-
-    @HostListener('window:keydown', ['$event'])
-    private onKeyDown(event: KeyboardEvent) {
-        this.UserService.startAction(event);
-    }
+  @HostListener('window:keydown', ['$event'])
+  private onKeyDown(event: KeyboardEvent) {
+    this.GameObjectsService.startAction(event);
+  }
 }
