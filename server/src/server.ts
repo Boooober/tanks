@@ -1,25 +1,20 @@
+const logger = require('morgan');
 const express = require('express');
-const http = require('http');
-const url = require('url');
-const WS = require('ws');
-import { UserSessionsService } from './user/user-sessions.service';
+const bodyParser = require('body-parser');
+
+import setupEndpoints from './features/setup-endpoints';
+import setupWebsockets from './features/setup-websockets';
+import setupGameLoop from './features/setup-game-loop';
 
 const app = express();
 
-// app.use(function (req, res) {
-//   res.send({ msg: "hello" });
-// });
+app.use(logger('dev'));
+app.use(bodyParser());
 
-const server = http.createServer(app);
-const wss = new WS.Server({
-  server,
-  port: 8081
-});
+setupEndpoints(app);
+setupWebsockets(app);
+setupGameLoop();
 
-wss.on('connection', function connection(ws, req) {
-  UserSessionsService.createSession(ws);
-});
-
-app.listen(8080, function listening() {
-  console.log('Listening on:)');
+app.listen(8080, () => {
+    console.log('Server started :)');
 });

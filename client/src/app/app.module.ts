@@ -1,32 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { UIRouterModule } from 'ui-router-ng2';
+import { GameModule } from './game/game.module';
+import { AuthFormModule } from './auth-forms/auth-forms.module';
 
 import { AppComponent } from './app.component';
 
-import { GameAreaComponent } from './layout/game-area/game-area.component';
-import { InfoPanelComponent } from './layout/info-panel/info-panel.component';
-
-import { ConnectionService } from './common/connection/connection.service';
-import { GameObjectsService } from './common/game-objects/game-objects.service';
-
+import rotes from './app.routes';
 
 @NgModule({
     declarations: [
-        AppComponent,
-        GameAreaComponent,
-        InfoPanelComponent
+        AppComponent
     ],
     imports: [
         BrowserModule,
-        FormsModule,
-        HttpModule
+        GameModule,
+        AuthFormModule,
+        UIRouterModule.forRoot({ states: [...rotes]})
     ],
-    providers: [
-        ConnectionService,
-        GameObjectsService
-    ],
+    providers: [],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

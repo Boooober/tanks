@@ -1,0 +1,38 @@
+<div class="app-login gray-bg">
+    <div class="middle-box text-center loginscreen">
+        <h3>Welcome to Tanx</h3>
+        <p>Perfectly designed and precisely prepared game is the extra new web app entertainment.</p>
+        <p>Login in. To see it in action.</p>
+        <form class="m-t"
+              novalidate
+              #loginForm="ngForm"
+              (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <input type="email"
+                       name="email"
+                       [(ngModel)]="email"
+                       class="form-control"
+                       placeholder="Username"
+                       required />
+            </div>
+            <div class="form-group">
+                <input type="password"
+                       name="password"
+                       [(ngModel)]="password"
+                       class="form-control"
+                       placeholder="Password"
+                       required />
+            </div>
+            <button type="submit"
+                    [disabled]="!loginForm.form.valid"
+                    class="btn btn-primary block full-width m-b">
+                Login
+            </button>
+
+            <p class="text-muted text-center">
+                <small>Do not have an account?</small>
+            </p>
+            <a class="btn btn-sm btn-white btn-block" uiSref="signin">Create an account</a>
+        </form>
+    </div>
+</div>

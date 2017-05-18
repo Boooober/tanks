@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import './assets/scss/reset';
+@import './assets/scss/base';
 @import './assets/scss/layout';
+
+@import './assets/css/bootstrap.min.css';
+@import './assets/css/inspinia-style.css';
