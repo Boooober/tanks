@@ -1,7 +1,7 @@
 import { LoginComponent } from './login/login.component';
 import { SigninComponent } from './signin/signin.component';
 
-export default [
+export const routes = [
     {
         url: '/login',
         name: 'login',

@@ -10,7 +10,7 @@ import { SigninComponent } from './signin/signin.component';
 import { AuthService } from './auth.service';
 
 /* Routes */
-import routes from './auth-forms.routes';
+import { routes } from './auth-forms.routes';
 
 @NgModule({
     declarations: [

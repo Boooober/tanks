@@ -1,7 +1,7 @@
-export default [
-    {
-        url: '/',
-        name: 'root',
-        redirectTo: 'login'
-    }
+export const routes = [
+  {
+    url: '/',
+    name: 'root',
+    redirectTo: 'login'
+  }
 ];

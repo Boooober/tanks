@@ -5,11 +5,13 @@
   "angular-cli": {},
   "scripts": {
     "ng": "ng",
+    "build": "webpack --config server/webpack.config.js && ng build",
     "start": "ng serve --proxy-config proxy.conf.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "server": "webpack --config server/webpack.config.js && node server/dist/main.js"
+    "server": "webpack --config server/webpack.config.js && node build/main.js",
+    "mongodb": "mongod --config \"C:/Program Files/MongoDB/Server/3.4/bin/mongodb.config\""
   },
   "private": true,
   "dependencies": {
@@ -25,10 +27,12 @@
     "body-parser": "^1.17.2",
     "core-js": "^2.4.1",
     "express": "^4.15.3",
+    "md5": "^2.2.1",
     "mongodb": "^2.2.26",
     "mongoose": "^4.10.0",
     "rxjs": "^5.0.1",
     "ts-helpers": "^1.1.1",
+    "ui-router-ng2": "^1.0.0-beta.5",
     "ws": "^3.0.0",
     "zone.js": "^0.7.2"
   },

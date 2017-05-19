@@ -4,14 +4,16 @@ import { GameObjectProperties } from './game-object-properties.class';
 import { GameObjectsCalculationsService } from './game-object-calculations.class';
 
 export class GameObjectsService {
-  static objects: GameObjectProperties[] = [];
+  objects: GameObjectProperties[] = [];
 
-  static update(): void {
-    GameObjectsService.clearObjects();
-    GameObjectsService.objects.forEach(object => {
+  update(): void {
+    this.clearObjects();
+    this.objects.forEach(object => {
       switch (object.type) {
         case 'bullet':
           GameObjectsCalculationsService.calculateBullet(object as BulletObject);
+          GameObjectsCalculationsService.calculateCollustions(object as BulletObject, this.objects);
+
           break;
         case 'player':
           GameObjectsCalculationsService.calculatePlayer(object as PlayerObject);
@@ -21,19 +23,21 @@ export class GameObjectsService {
     });
   }
 
-  static createPlayerObject(): PlayerObject {
+  createPlayerObject(): PlayerObject {
     const startPoint = {
-      x: Math.floor(Math.random() * 500),
-      y: Math.floor(Math.random() * 500)
+      x: Math.floor(Math.random() * 1000),
+      y: Math.floor(Math.random() * 700)
     };
     return new PlayerObject(startPoint);
   }
 
-  static addObject(object: GameObjectProperties): void {
-      GameObjectsService.objects.push(object);
+  addObject(object: GameObjectProperties): void {
+      this.objects.push(object);
   }
 
-  static clearObjects(): void {
-      GameObjectsService.objects = GameObjectsService.objects.filter(object => !object.remove);
+  clearObjects(): void {
+    this.objects = this.objects.filter(object => !object.remove);
   }
 }
+
+export default new GameObjectsService;

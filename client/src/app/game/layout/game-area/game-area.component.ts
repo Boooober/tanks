@@ -1,5 +1,6 @@
 import { Subscription } from 'rxjs/Rx';
-import { Component, ElementRef, OnInit, ViewChild, HostListener, OnDestroy } from '@angular/core';
+
+import { Component, Input, ElementRef, OnInit, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { AppComponent } from '../../../app.component';
 import { GameObjectsService } from '../../objects/game-objects.service';
 import { ConnectionService } from '../../connection/connection.service';
@@ -26,7 +27,7 @@ export class GameAreaComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.context = this.gameArea.nativeElement.getContext('2d');
-        this.setImages();
+        this.setUserOptions();
         this.objectsSubscription = this.ConnectionService.getObjectsStream()
             .subscribe((objects: GameObjectProperties[]) => this.render(objects));
     }
@@ -44,7 +45,7 @@ export class GameAreaComponent implements OnInit, OnDestroy {
         this.GameObjectsService.draw(this.context, objects);
     }
 
-    setImages(): void {
+  setUserOptions(): void {
         this.GameObjectsService.setImages({
             tank: this.tankImage.nativeElement,
             tankFire: this.tankFireImage.nativeElement,

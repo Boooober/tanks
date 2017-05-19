@@ -11,14 +11,16 @@
                 <input type="email"
                        name="email"
                        [(ngModel)]="email"
+                       (ngModelChange)="clearErrors()"
                        class="form-control"
-                       placeholder="Username"
+                       placeholder="Email"
                        required />
             </div>
             <div class="form-group">
                 <input type="password"
                        name="password"
                        [(ngModel)]="password"
+                       (ngModelChange)="clearErrors()"
                        class="form-control"
                        placeholder="Password"
                        required />
@@ -34,5 +36,9 @@
             </p>
             <a class="btn btn-sm btn-white btn-block" uiSref="signin">Create an account</a>
         </form>
+
+      <div class="m-t panel panel-danger" [hidden]="!doesNotExists">
+        <div class="panel-heading">Wrong email or password</div>
+      </div>
     </div>
 </div>

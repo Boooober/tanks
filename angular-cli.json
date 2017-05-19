@@ -7,7 +7,7 @@
   "apps": [
     {
       "root": "client/src",
-      "outDir": "client/dist",
+      "outDir": "build/client",
       "assets": [
         "assets",
         "favicon.ico"

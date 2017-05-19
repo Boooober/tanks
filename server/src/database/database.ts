@@ -1,6 +1,15 @@
+import { MONGO_DATABASE } from '../config';
 export { UserModel } from './schema/user.class';
 
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/tanx_database');
-const db = mongoose.connection;
+mongoose.connect(MONGO_DATABASE);
+export const DB = mongoose.connection;
+
+DB.once('open', () => {
+  console.log('Connected to DB!');
+});
+
+DB.on('error', err => {
+  console.log('Connection error:', err.message);
+});

@@ -10,7 +10,7 @@ import { ConnectionService } from './connection/connection.service';
 import { GameObjectsService } from './objects/game-objects.service';
 
 /* Routes */
-import routes from './game.routes';
+import { routes } from './game.routes';
 
 @NgModule({
     declarations: [

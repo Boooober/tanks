@@ -2,7 +2,7 @@ import { ReplaySubject, Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { GameObjectProperties } from '../objects/game-object-properties.class';
 
-export const WEBSOCKET_ADDRESS = 'ws://localhost:8081';
+export const WEBSOCKET_ADDRESS = 'ws://10.17.10.108:8081';
 
 @Injectable()
 export class ConnectionService {

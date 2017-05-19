@@ -1,6 +1,6 @@
 import { PlayerObject } from './player-object.class';
 import { GamePlayerCommands } from './game-player-commands.service';
-import { GameObjectsService } from './game-objects.service';
+import GameObjectsService from './game-objects.service';
 
 export class GamePlayersExecutorService {
   private static players/*: {id: number, object: PlayerObject}*/ = {};

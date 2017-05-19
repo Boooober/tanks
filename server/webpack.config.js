@@ -15,7 +15,7 @@ module.exports = {
   target: 'node',
   entry: './server.ts',
   output: {
-    path: path.resolve(__dirname, 'dist/'),
+    path: path.resolve(__dirname, '../build/'),
     filename: '[name].js',
     publicPath: '/'
   },

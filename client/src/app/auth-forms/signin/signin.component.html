@@ -19,6 +19,7 @@
                 <input type="email"
                        name="email"
                        [(ngModel)]="email"
+                       (ngModelChange)="clearEmailErrors()"
                        class="form-control"
                        placeholder="Email"
                        required />
@@ -44,5 +45,9 @@
             <a class="btn btn-sm btn-white btn-block" uiSref="login">Login</a>
 
         </form>
+
+      <div class="m-t panel panel-danger" [hidden]="!alreadyExists">
+        <div class="panel-heading">Account with this email already exists</div>
+      </div>
     </div>
 </div>

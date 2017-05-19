@@ -6,7 +6,7 @@ import { AuthFormModule } from './auth-forms/auth-forms.module';
 
 import { AppComponent } from './app.component';
 
-import rotes from './app.routes';
+import { routes } from './app.routes';
 
 @NgModule({
     declarations: [
@@ -16,7 +16,7 @@ import rotes from './app.routes';
         BrowserModule,
         GameModule,
         AuthFormModule,
-        UIRouterModule.forRoot({ states: [...rotes]})
+        UIRouterModule.forRoot({ states: [...routes]})
     ],
     providers: [],
     bootstrap: [AppComponent]

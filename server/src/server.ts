@@ -10,6 +10,7 @@ const app = express();
 
 app.use(logger('dev'));
 app.use(bodyParser());
+app.use(express.static('build/client'));
 
 setupEndpoints(app);
 setupWebsockets(app);
