@@ -1,43 +1,63 @@
-import { BulletObject } from './bullet-object.class';
-import { PlayerObject } from './player-object.class';
-import { GameObjectProperties } from './game-object-properties.class';
-import { GameObjectsCalculationsService } from './game-object-calculations.class';
+import { GameUser } from '../game-user.class';
+import { BaseObject } from './classes/base-object.class';
+import { BulletObject } from './classes/bullet-object.class';
+import { PlayerObject } from './classes/player-object.class';
+import GameObjectsCalculationsService from './game-objects-calculations.service';
 
-export class GameObjectsService {
-  objects: GameObjectProperties[] = [];
+class GameObjectsService {
+    private players: { [sessionId: string]: PlayerObject; } = {};
+    public objects: BaseObject[] = [];
 
-  update(): void {
-    this.clearObjects();
-    this.objects.forEach(object => {
-      switch (object.type) {
-        case 'bullet':
-          GameObjectsCalculationsService.calculateBullet(object as BulletObject);
-          GameObjectsCalculationsService.calculateCollustions(object as BulletObject, this.objects);
+    update(): void {
+        this.clearObjects();
+        this.objects.forEach(object => {
+            switch (object.type) {
+                case BulletObject.TYPE:
+                    GameObjectsCalculationsService.calculateBullet(object as BulletObject);
+                    GameObjectsCalculationsService.calculateBulletCollisions(object as BulletObject, this.objects);
+                    break;
+                case PlayerObject.TYPE:
+                    GameObjectsCalculationsService.calculatePlayer(object as PlayerObject);
+                    GameObjectsCalculationsService.calculatePlayerCollisions(object as PlayerObject, this.objects);
+                    break;
+            }
+        });
+    }
 
-          break;
-        case 'player':
-          GameObjectsCalculationsService.calculatePlayer(object as PlayerObject);
-          break;
-        default:
-      }
-    });
-  }
+    createPlayer(sessionId: string, player: GameUser): void {
+        const object = new PlayerObject({ username: player.name });
+        player.unit
+            ? Object.assign(object, player.unit)
+            : Object.assign(object, {
+                x: Math.floor(Math.random() * 1000),
+                y: Math.floor(Math.random() * 700),
+                deg: Math.floor(Math.random() * 360)
+            });
+        this.players[sessionId] = object;
+        this.addObject(object);
+    }
 
-  createPlayerObject(): PlayerObject {
-    const startPoint = {
-      x: Math.floor(Math.random() * 1000),
-      y: Math.floor(Math.random() * 700)
-    };
-    return new PlayerObject(startPoint);
-  }
+    removePlayer(sessionId: string): void {
+        this.players[sessionId].remove = true;
+        delete this.players[sessionId];
+    }
 
-  addObject(object: GameObjectProperties): void {
-      this.objects.push(object);
-  }
+    getPlayer(sessionId: string): PlayerObject {
+        return this.players[sessionId];
+    }
 
-  clearObjects(): void {
-    this.objects = this.objects.filter(object => !object.remove);
-  }
+    addObject(object: BaseObject): void {
+        this.objects.push(object);
+    }
+
+    clearObjects(): void {
+        this.objects = this.objects.filter(object => !object.remove);
+        Object.keys(this.players).forEach(sessionId => {
+            if (this.players[sessionId].remove) {
+                delete this.players[sessionId];
+            }
+        });
+    }
 }
 
 export default new GameObjectsService;

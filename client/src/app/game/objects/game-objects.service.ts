@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { ConnectionService } from '../connection/connection.service';
-import { GameObjectProperties } from './game-object-properties.class';
-import { GameObjectsRendererService } from './game-object-renderer.service';
-import { BulletObject } from './bullet-object.class';
-import { PlayerObject } from './player-object.class';
+import { BaseObject } from './classes/base-object.class';
+import { BulletObject } from './classes/bullet-object.class';
+import { PlayerObject } from './classes/player-object.class';
+import { GameObjectsRendererService } from './renderers/game-object-renderer.service';
+import { UserConnectionService } from '../connection/user-connection.service';
 
 export const ACTION_KEYS = {
     37: 'moveLeft',
@@ -24,17 +24,17 @@ export class GameObjectsService {
     private images = {};
     private actionCache = {};
 
-    constructor(private ConnectionService: ConnectionService) {
-        this.ConnectionService.connect();
+    constructor(private UserConnectionService: UserConnectionService) {
+        this.UserConnectionService.connect();
     }
 
-    draw(context: CanvasRenderingContext2D, objects: GameObjectProperties[]) {
+    draw(context: CanvasRenderingContext2D, objects: BaseObject[]) {
         objects.forEach(object => {
             switch (object.type) {
-                case 'bullet':
+                case BulletObject.TYPE:
                     GameObjectsRendererService.drawBullet(context, object as BulletObject);
                     break;
-                case 'player':
+                case PlayerObject.TYPE:
                     GameObjectsRendererService.drawPlayer(context, object as PlayerObject, this.images);
                     break;
                 default:
@@ -47,22 +47,22 @@ export class GameObjectsService {
     }
 
     startAction(event: KeyboardEvent) {
-        const action = GameObjectsService.getActionToSend(event);
+        const action = this.getActionToSend(event);
         if (action && this.actionCache[action] !== true) {
             this.actionCache[action] = true;
-            this.ConnectionService.startAction(action);
+            this.UserConnectionService.startAction(action);
         }
     }
 
     finishAction(event: KeyboardEvent) {
-        const action = GameObjectsService.getActionToSend(event);
+        const action = this.getActionToSend(event);
         if (action && this.actionCache[action] !== false) {
             this.actionCache[action] = false;
-            this.ConnectionService.finishAction(action);
+            this.UserConnectionService.finishAction(action);
         }
     }
 
-    private static getActionToSend(event: KeyboardEvent): string {
+    private getActionToSend(event: KeyboardEvent): string {
         const { keyCode } = event;
         return ACTION_KEYS[keyCode];
     }

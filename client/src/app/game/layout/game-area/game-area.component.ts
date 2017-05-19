@@ -1,10 +1,10 @@
 import { Subscription } from 'rxjs/Rx';
 
-import { Component, Input, ElementRef, OnInit, ViewChild, HostListener, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { AppComponent } from '../../../app.component';
+import { BaseObject } from '../../objects/classes/base-object.class';
 import { GameObjectsService } from '../../objects/game-objects.service';
-import { ConnectionService } from '../../connection/connection.service';
-import { GameObjectProperties } from '../../objects/game-object-properties.class';
+import { UserConnectionService } from '../../connection/user-connection.service';
 
 @Component({
     selector: 'app-game-area',
@@ -21,22 +21,22 @@ export class GameAreaComponent implements OnInit, OnDestroy {
     private objectsSubscription: Subscription;
 
     constructor(private App: AppComponent,
-                private ConnectionService: ConnectionService,
+                private UserConnectionService: UserConnectionService,
                 private GameObjectsService: GameObjectsService) {
     }
 
     ngOnInit(): void {
         this.context = this.gameArea.nativeElement.getContext('2d');
         this.setUserOptions();
-        this.objectsSubscription = this.ConnectionService.getObjectsStream()
-            .subscribe((objects: GameObjectProperties[]) => this.render(objects));
+        this.objectsSubscription = this.UserConnectionService.getObjectsStream()
+            .subscribe((objects: BaseObject[]) => this.render(objects));
     }
 
     ngOnDestroy(): void {
         this.objectsSubscription.unsubscribe();
     }
 
-    render(objects: GameObjectProperties[]): void {
+    render(objects: BaseObject[]): void {
         const { width, height } = this.App;
 
         this.context.canvas.height = height;

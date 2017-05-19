@@ -6,8 +6,8 @@ import { GameComponent } from './game.component';
 import { GameAreaComponent } from './layout/game-area/game-area.component';
 import { InfoPanelComponent } from './layout/info-panel/info-panel.component';
 
-import { ConnectionService } from './connection/connection.service';
 import { GameObjectsService } from './objects/game-objects.service';
+import { UserConnectionService } from './connection/user-connection.service';
 
 /* Routes */
 import { routes } from './game.routes';
@@ -27,8 +27,8 @@ import { routes } from './game.routes';
         InfoPanelComponent
     ],
     providers: [
-        ConnectionService,
-        GameObjectsService
+        GameObjectsService,
+        UserConnectionService
     ]
 })
 export class GameModule {}

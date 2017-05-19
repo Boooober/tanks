@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { Injectable } from '@angular/core';
 
 import { User } from './user.class';
 
@@ -9,18 +9,17 @@ export class AuthService {
 
     constructor(private http: Http) {}
 
-    login(credentials: { email: string, password: string }): Promise<any> {
+    login(credentials: User): Promise<any> {
         return this.http.post('/api/login', credentials).toPromise()
             .then(response => {
               const { data } = response.json();
-              return this.user = data.user;
+              return this.user = data;
             });
     }
 
-    signin(credentials: { name: string, email: string, password: string }): Promise<any> {
+    signin(credentials: User): Promise<any> {
         return this.http.post('/api/signin', credentials).toPromise()
-          .then(response => response.json())
-
+          .then(response => response.json());
     }
 
     isAuthorized(): boolean {

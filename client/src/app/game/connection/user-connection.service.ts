@@ -1,22 +1,26 @@
 import { ReplaySubject, Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
-import { GameObjectProperties } from '../objects/game-object-properties.class';
+import { BaseObject } from '../objects/classes/base-object.class';
 
-export const WEBSOCKET_ADDRESS = 'ws://10.17.10.108:8081';
+import { WEBSOCKET_ADDRESS } from '../../../../../config/config';
+import { AuthService } from '../../auth-forms/auth.service';
 
 @Injectable()
-export class ConnectionService {
+export class UserConnectionService {
     private socket: WebSocket;
 
     private objectsSubject = new ReplaySubject(1);
     private messagesSubject = new ReplaySubject(1);
 
+    constructor(private AuthService: AuthService) {}
+
     connect(): void {
         this.socket = new WebSocket(WEBSOCKET_ADDRESS);
+        this.socket.onopen = () => this.sendUser();
         this.socket.onmessage = event => this.onMessage(event);
     }
 
-    getObjectsStream(): Observable<GameObjectProperties[]> {
+    getObjectsStream(): Observable<BaseObject[]> {
         return this.objectsSubject.asObservable();
     }
 
@@ -37,7 +41,7 @@ export class ConnectionService {
         const { method, data } = JSON.parse(event.data);
         switch (method) {
             case 'objectUpdates':
-                this.objectUpdates(data as GameObjectProperties);
+                this.objectUpdates(data as BaseObject);
                 break;
             case 'messageUpdates':
                 this.objectUpdates(data);
@@ -49,7 +53,12 @@ export class ConnectionService {
         this.messagesSubject.next(data);
     }
 
-    private objectUpdates(data: GameObjectProperties): void {
+    private objectUpdates(data: BaseObject): void {
         this.objectsSubject.next(data);
+    }
+
+    private sendUser(): void {
+        const user = this.AuthService.getUser();
+        this.sendMessage('user', user);
     }
 }
