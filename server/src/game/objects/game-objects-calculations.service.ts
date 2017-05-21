@@ -28,10 +28,10 @@ class GameObjectsCalculationsService {
         if (object.deg > 360) {
             object.deg = 0;
         }
-        if (object.moveUp) {
+        if (this.canMoveForward(object)) {
             this.moveForward(object);
         }
-        if (object.moveDown) {
+        if (this.canMoveBackward(object)) {
             this.moveBackward(object);
         }
         this.updateCenter(object);
@@ -59,10 +59,7 @@ class GameObjectsCalculationsService {
     calculateBulletCollisions(bullet: BulletObject, objects: BaseObject[]): void {
         objects.forEach(object => {
             if (object !== bullet && object !== bullet.shooter) {
-                if (bullet.x < object.x + object.width &&
-                    bullet.x + bullet.width > object.x &&
-                    bullet.y < object.y + object.height &&
-                    bullet.height + bullet.y > object.y) {
+                if (this.hasCollision(bullet, object)) {
                     this.calculateBulletDamage(bullet, object);
                     this.calculateObjectDamageFromBullet(bullet, object);
                 }
@@ -71,6 +68,13 @@ class GameObjectsCalculationsService {
     }
 
     calculatePlayerCollisions(player: PlayerObject, objects: BaseObject[]): void {}
+
+    private hasCollision(object1: BaseObject, object2: BaseObject): boolean {
+        return object1.x < object2.x + object2.width &&
+            object1.x + object1.width > object2.x &&
+            object1.y < object2.y + object2.height &&
+            object1.height + object1.y > object2.y;
+    }
 
     private calculateBulletDamage(bullet: BulletObject, object: BaseObject) {
         object.health -= bullet.power;
@@ -94,6 +98,19 @@ class GameObjectsCalculationsService {
     private updateCenter(object: BaseObject): void {
         object.centerX = object.x + object.width / 2;
         object.centerY = object.y + object.height / 2;
+    }
+
+    private canMoveForward(object: PlayerObject): boolean {
+        if (object.moveUp) {
+            return true;
+        }
+        return false;
+    }
+    private canMoveBackward(object: PlayerObject): boolean {
+        if (object.moveDown) {
+            return true;
+        }
+        return false;
     }
 
     private moveForward(object: MovingObject): void {

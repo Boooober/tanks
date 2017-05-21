@@ -6,6 +6,7 @@ import { GameComponent } from './game.component';
 import { GameAreaComponent } from './layout/game-area/game-area.component';
 import { InfoPanelComponent } from './layout/info-panel/info-panel.component';
 
+import { GameRenderService } from './game-render.service';
 import { GameObjectsService } from './objects/game-objects.service';
 import { UserConnectionService } from './connection/user-connection.service';
 
@@ -27,6 +28,7 @@ import { routes } from './game.routes';
         InfoPanelComponent
     ],
     providers: [
+        GameRenderService,
         GameObjectsService,
         UserConnectionService
     ]

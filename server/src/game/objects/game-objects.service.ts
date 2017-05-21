@@ -38,8 +38,17 @@ class GameObjectsService {
     }
 
     removePlayer(sessionId: string): void {
-        this.players[sessionId].remove = true;
-        delete this.players[sessionId];
+        const player = this.players[sessionId];
+        /**
+         * PlayerObject will be removed automatically after death and at the end of session.
+         * On closing session we should be sure that object exists to remove it anyway.
+         *
+         * @see clearObjects
+         */
+        if (player) {
+            player.remove = true;
+            delete this.players[sessionId];
+        }
     }
 
     getPlayer(sessionId: string): PlayerObject {
@@ -54,7 +63,7 @@ class GameObjectsService {
         this.objects = this.objects.filter(object => !object.remove);
         Object.keys(this.players).forEach(sessionId => {
             if (this.players[sessionId].remove) {
-                delete this.players[sessionId];
+                this.removePlayer(sessionId);
             }
         });
     }
