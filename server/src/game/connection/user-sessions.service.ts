@@ -1,12 +1,12 @@
 import * as WebSocket from '@types/ws';
-import { GameUser } from '../game-user.class';
+import { GamePlayer } from '../game-player.class';
 import GamePlayersObjectService from '../objects/game-players-object.service';
 
 class UserSessionsService {
     private sessions: {
         [sessionId: string]: {
-            user?: GameUser
             socket: WebSocket,
+            player?: GamePlayer
         }
     } = {};
 
@@ -45,13 +45,14 @@ class UserSessionsService {
                 this.setupUser(sessionId, data);
                 break;
             case 'action':
-                GamePlayersObjectService.executeAction(sessionId, data);
+                const player = this.sessions[sessionId].player;
+                GamePlayersObjectService.executeAction(sessionId, player, data);
                 break;
         }
     }
 
-    private setupUser(sessionId: string, user: GameUser): void {
-        this.sessions[sessionId].user = user;
+    private setupUser(sessionId: string, user: GamePlayer): void {
+        this.sessions[sessionId].player = user;
         GamePlayersObjectService.create(sessionId, user);
 
     }

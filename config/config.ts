@@ -1,2 +1,2 @@
-export const MONGO_DATABASE = 'mongodb://192.168.0.101:27017/tanx_database';
-export const WEBSOCKET_ADDRESS = 'ws://192.168.0.101:8081';
+export const MONGO_DATABASE = 'mongodb://10.17.10.108:27017/tanx_database';
+export const WEBSOCKET_ADDRESS = 'ws://10.17.10.108:8081';

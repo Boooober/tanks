@@ -1,4 +1,4 @@
-import { GameUser } from '../game-user.class';
+import { GamePlayer } from '../game-player.class';
 import { BaseObject } from './classes/base-object.class';
 import { BulletObject } from './classes/bullet-object.class';
 import { PlayerObject } from './classes/player-object.class';
@@ -24,7 +24,7 @@ class GameObjectsService {
         });
     }
 
-    createPlayer(sessionId: string, player: GameUser): void {
+    createPlayer(sessionId: string, player: GamePlayer): void {
         const object = new PlayerObject({ username: player.name });
         player.unit
             ? Object.assign(object, player.unit)
@@ -51,8 +51,8 @@ class GameObjectsService {
         }
     }
 
-    getPlayer(sessionId: string): PlayerObject {
-        return this.players[sessionId];
+    getPlayer(sessionId: string): PlayerObject | null {
+        return this.players[sessionId] || null;
     }
 
     addObject(object: BaseObject): void {
