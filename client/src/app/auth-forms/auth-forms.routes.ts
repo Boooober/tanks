@@ -5,6 +5,7 @@ export const routes = [
     {
         url: '/login',
         name: 'login',
+        params: { successSignin: null },
         component: LoginComponent
     },
     {

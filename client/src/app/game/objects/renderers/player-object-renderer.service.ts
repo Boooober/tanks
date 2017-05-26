@@ -16,7 +16,7 @@ export class PlayerObjectsRendererService {
         context.beginPath();
         context.translate(object.centerX, object.centerY);
         context.rotate(object.deg * Math.PI / 180);
-        const img = object.fireWait ? images.tankFire : images.tank;
+        const img = object.isAttacking ? images.tankFire : images.tank;
         context.drawImage(img, -object.width / 2, -object.height / 2);
         context.restore();
     }

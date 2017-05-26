@@ -9,4 +9,5 @@ export class BaseObject {
     public remove?: boolean;
     public centerX: number;
     public centerY: number;
+    public objectId: string;
 }

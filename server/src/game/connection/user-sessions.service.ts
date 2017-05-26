@@ -1,18 +1,19 @@
 import * as WebSocket from '@types/ws';
-import { GamePlayer } from '../game-player.class';
-import GamePlayersObjectService from '../objects/game-players-object.service';
+import { Player } from '../classes/player.class';
+import { UserModel } from '../../database/database';
+import GameUnitsObjectService from '../objects/game-units-object.service';
 
 class UserSessionsService {
     private sessions: {
         [sessionId: string]: {
             socket: WebSocket,
-            player?: GamePlayer
+            player?: Player
         }
     } = {};
 
     createSession(socket: WebSocket): string {
         const sessionId = this.getSessionId();
-        console.log('New connection %d :)', sessionId);
+        console.log('New connection %d :)', new Date);
 
         this.sessions[sessionId] = { socket };
         socket.on('message', message => this.onMessage(sessionId, message));
@@ -21,15 +22,17 @@ class UserSessionsService {
     }
 
     deleteSession(sessionId: string): void {
-        console.log('Connection closed %d :(', sessionId);
-        GamePlayersObjectService.remove(sessionId);
+        console.log('Connection closed %d :(', new Date);
+        const { player: { id, unit } } = this.sessions[sessionId];
+        UserModel.saveObject(id, unit);
+        GameUnitsObjectService.remove(unit);
         delete this.sessions[sessionId];
     }
 
-    sendMessage(session: WebSocket, method: string, data: any): void {
-        const message = JSON.stringify({ method, data });
-        this.postMessage(session, message);
-    }
+    // sendMessage(session: WebSocket, method: string, data: any): void {
+    //     const message = JSON.stringify({ method, data });
+    //     this.postMessage(session, message);
+    // }
 
     sendAllMessage(method: string, data: any): void {
         const message = JSON.stringify({ method, data });
@@ -42,19 +45,22 @@ class UserSessionsService {
         const { method, data } = JSON.parse(message);
         switch (method) {
             case 'user':
-                this.setupUser(sessionId, data);
+                this.setupPlayer(sessionId, data.id);
                 break;
             case 'action':
-                const player = this.sessions[sessionId].player;
-                GamePlayersObjectService.executeAction(sessionId, player, data);
+                const { player } = this.sessions[sessionId];
+                GameUnitsObjectService.executeAction(sessionId, player, data);
                 break;
         }
     }
 
-    private setupUser(sessionId: string, user: GamePlayer): void {
-        this.sessions[sessionId].player = user;
-        GamePlayersObjectService.create(sessionId, user);
+    private setupPlayer(sessionId: string, userId: string): void {
+        UserModel.findById(userId, (error, user) => {
+            const player = new Player(user);
 
+            this.sessions[sessionId].player = player;
+            GameUnitsObjectService.create(sessionId, player);
+        });
     }
 
     private postMessage(session: WebSocket, message: string) {

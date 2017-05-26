@@ -1,13 +1,15 @@
-import { GamePlayer } from '../game-player.class';
 import { BaseObject } from './classes/base-object.class';
 import { BulletObject } from './classes/bullet-object.class';
 import { PlayerObject } from './classes/player-object.class';
 import GameObjectsCalculationsService from './game-objects-calculations.service';
 
-class GameObjectsService {
-    private players: { [sessionId: string]: PlayerObject; } = {};
+export class GameObjectsService {
     public objects: BaseObject[] = [];
 
+    /**
+     * Updating from game loop
+     * @see GameLoop
+     */
     update(): void {
         this.clearObjects();
         this.objects.forEach(object => {
@@ -24,48 +26,14 @@ class GameObjectsService {
         });
     }
 
-    createPlayer(sessionId: string, player: GamePlayer): void {
-        const object = new PlayerObject({ username: player.name });
-        player.unit
-            ? Object.assign(object, player.unit)
-            : Object.assign(object, {
-                x: Math.floor(Math.random() * 1000),
-                y: Math.floor(Math.random() * 700),
-                deg: Math.floor(Math.random() * 360)
-            });
-        this.players[sessionId] = object;
-        this.addObject(object);
-    }
-
-    removePlayer(sessionId: string): void {
-        const player = this.players[sessionId];
-        /**
-         * PlayerObject will be removed automatically after death and at the end of session.
-         * On closing session we should be sure that object exists to remove it anyway.
-         *
-         * @see clearObjects
-         */
-        if (player) {
-            player.remove = true;
-            delete this.players[sessionId];
+    addObject(object: BaseObject | null): void {
+        if (object) {
+            this.objects.push(object);
         }
-    }
-
-    getPlayer(sessionId: string): PlayerObject | null {
-        return this.players[sessionId] || null;
-    }
-
-    addObject(object: BaseObject): void {
-        this.objects.push(object);
     }
 
     clearObjects(): void {
         this.objects = this.objects.filter(object => !object.remove);
-        Object.keys(this.players).forEach(sessionId => {
-            if (this.players[sessionId].remove) {
-                this.removePlayer(sessionId);
-            }
-        });
     }
 }
 

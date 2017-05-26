@@ -11,7 +11,6 @@ const ACCOUNT_ALREADY_EXISTS_EXCEPTION = 'AccountAlreadyExistsException';
 })
 export class SigninComponent {
     name = '';
-    email = '';
     password = '';
 
     alreadyExists = false;
@@ -21,9 +20,9 @@ export class SigninComponent {
     }
 
     onSubmit() {
-        const { name, email, password } = this;
-        this.AuthService.signin({ name, email, password })
-            .then(() => this.StateService.go('login'))
+        const { name, password } = this;
+        this.AuthService.signin({ name, password })
+            .then(() => this.StateService.go('login', { successSignin: true }))
             .catch(response => {
                 const error = response.json();
                 if (error.type === ACCOUNT_ALREADY_EXISTS_EXCEPTION) {

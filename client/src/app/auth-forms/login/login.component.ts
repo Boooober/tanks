@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StateService } from 'ui-router-ng2';
 import { AuthService } from '../auth.service';
 
@@ -10,15 +10,20 @@ const ACCOUNT_DOES_NOT_EXISTS_EXCEPTION = 'AccountDoesNotExistsException';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
     login = '';
     password = '';
 
-    doesNotExists = false;
-    wrongPassword = false;
+    doesNotExists = null;
+    wrongPassword = null;
+    successSignin = null;
 
     constructor(private AuthService: AuthService,
                 private StateService: StateService) {
+    }
+
+    ngOnInit() {
+        this.successSignin = this.StateService.params['successSignin'];
     }
 
     onSubmit() {

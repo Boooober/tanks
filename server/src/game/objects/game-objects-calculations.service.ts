@@ -3,7 +3,11 @@ import { MovingObject } from './classes/moving-object.class';
 import { PlayerObject } from './classes/player-object.class';
 import { BulletObject } from './classes/bullet-object.class';
 
+import GameEvents from '../game-events.service';
+
 class GameObjectsCalculationsService {
+    private actions: { [action: string]: Array<Function> };
+
     calculateBullet(object: BulletObject): void {
         this.moveForward(object);
         if (object.x < 0 ||
@@ -37,21 +41,20 @@ class GameObjectsCalculationsService {
         this.updateCenter(object);
     }
 
-    isPlayerFiring(player: PlayerObject): boolean {
-        return player.doFire && player.canFire && !player.fireWait;
-    }
-
-    doPlayerFire(player: PlayerObject): BulletObject {
-        player.stats.totalShoots += 1;
-        player.fireWait = true;
+    attack(player: PlayerObject): BulletObject {
+        GameEvents.exec('onFire', player);
+        player.canAttack = false;
+        player.isAttacking = true;
         setTimeout(() => {
-            player.fireWait = false;
-        }, player.fireDelay);
+            player.canAttack = true;
+            player.isAttacking = false;
+        }, 1000 / player.attackSpeed);
+
         return new BulletObject({
             x: player.x + (player.width / 2),
             y: player.y + (player.height / 2),
             deg: player.deg,
-            speed: player.fireSpeed,
+            power: player.attackPower,
             shooter: player
         });
     }
@@ -62,12 +65,21 @@ class GameObjectsCalculationsService {
                 if (this.hasCollision(bullet, object)) {
                     this.calculateBulletDamage(bullet, object);
                     this.calculateObjectDamageFromBullet(bullet, object);
+                    GameEvents.exec('onBulletCollisions', bullet, object);
                 }
             }
         });
     }
 
     calculatePlayerCollisions(player: PlayerObject, objects: BaseObject[]): void {}
+
+    getRandomPosition(): { x: number, y: number, deg: number } {
+        return {
+            x: Math.floor(Math.random() * 1000),
+            y: Math.floor(Math.random() * 700),
+            deg: Math.floor(Math.random() * 360)
+        };
+    }
 
     private hasCollision(object1: BaseObject, object2: BaseObject): boolean {
         return object1.x < object2.x + object2.width &&
@@ -76,22 +88,14 @@ class GameObjectsCalculationsService {
             object1.height + object1.y > object2.y;
     }
 
-    private calculateBulletDamage(bullet: BulletObject, object: BaseObject) {
+    private calculateBulletDamage(bullet: BulletObject, object: BaseObject): void {
         object.health -= bullet.power;
-        bullet.shooter.stats.totalDamage = bullet.power;
-        bullet.shooter.stats.successShoots += 1;
         bullet.remove = true;
     }
 
-    private calculateObjectDamageFromBullet(bullet: BulletObject, object: BaseObject) {
+    private calculateObjectDamageFromBullet(bullet: BulletObject, object: BaseObject): void {
         if (object.health <= 0) {
             object.remove = true;
-        }
-        if (object.type === PlayerObject.TYPE) {
-            bullet.shooter.stats.receivedDamage += bullet.power;
-            if (object.health <= 0) {
-                bullet.shooter.stats.score += 1;
-            }
         }
     }
 

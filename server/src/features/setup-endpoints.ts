@@ -23,8 +23,8 @@ export default function setupEndpoints(app) {
     });
 
     app.post('/api/signin', function (req, res) {
-        const { name, email, password } = req.body;
-        const user = new UserModel({ name, email });
+        const { name, password } = req.body;
+        const user = new UserModel({ name });
         user.password = user.hashPassword(password);
         user.save(err => {
             if (!err) {
