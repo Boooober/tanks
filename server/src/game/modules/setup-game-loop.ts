@@ -1,5 +1,5 @@
-import GameObjectsService from '../game/objects/game-objects.service';
-import UserSessionsService from '../game/connection/user-sessions.service';
+import GameObjectsService from '../objects/game-objects.service';
+import UserSessionsService from '../connection/user-sessions.service';
 
 /**
  * @name GameLoop

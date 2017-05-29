@@ -9,28 +9,29 @@ import GameEventsService from '../game-events.service';
 
 class GameStatisticsCalculationService {
     static onFire(player: PlayerObject) {
-        UserModel.updateStats(player.objectId, { totalShoots: 1 } as PlayerStatistics);
+        UserModel.incrementStats(player.objectId, { totalShoots: 1 } as PlayerStatistics);
     }
 
     static onBulletCollisions(bullet: BulletObject, object: BaseObject): void {
-        const shooterStats = {
+        UserModel.incrementStats(bullet.shooter.objectId, {
             successShoots: 1,
             totalDamage: bullet.power
-        } as PlayerStatistics;
+        } as PlayerStatistics);
+    }
 
-        if (object.type === PlayerObject.TYPE) {
-            const targetStats = { receivedDamage: bullet.power } as PlayerStatistics;
-            if (object.health <= 0) {
-                shooterStats.score = 1;
-            }
-            UserModel.updateStats(object.objectId, targetStats);
-        }
-        UserModel.updateStats(bullet.shooter.objectId, shooterStats);
+    static onBulletPlayerCollisions(bullet: BulletObject, object: BaseObject): void {
+        UserModel.incrementStats(object.objectId, { receivedDamage: bullet.power } as PlayerStatistics);
+    }
+
+    static onBulletLethalCollision(bullet: BulletObject, object: BaseObject): void {
+        UserModel.incrementStats(bullet.shooter.objectId, { score: 1 } as PlayerStatistics);
     }
 
     init() {
         GameEventsService.on('onFire', GameStatisticsCalculationService.onFire);
         GameEventsService.on('onBulletCollisions', GameStatisticsCalculationService.onBulletCollisions);
+        GameEventsService.on('onBulletPlayerCollisions', GameStatisticsCalculationService.onBulletPlayerCollisions);
+        GameEventsService.on('onBulletLethalCollision', GameStatisticsCalculationService.onBulletLethalCollision);
     }
 }
 

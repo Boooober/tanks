@@ -66,6 +66,14 @@ class GameObjectsCalculationsService {
                     this.calculateBulletDamage(bullet, object);
                     this.calculateObjectDamageFromBullet(bullet, object);
                     GameEvents.exec('onBulletCollisions', bullet, object);
+
+                    if (object.type === PlayerObject.TYPE) {
+                        GameEvents.exec('onBulletPlayerCollisions', bullet, object, );
+
+                        if (object.health <= 0) {
+                            GameEvents.exec('onBulletLethalCollision', bullet, object);
+                        }
+                    }
                 }
             }
         });

@@ -1,9 +1,9 @@
 const WS = require('ws');
 const http = require('http');
 import * as WebSocket from '@types/ws';
-import UserSessionsService from '../game/connection/user-sessions.service';
+import UserSessionsService from '../connection/user-sessions.service';
 
-export default function setupWebsockets(app) {
+export default function setupGameSocket(app) {
     const server = http.createServer(app);
     const wss = new WS.Server({ server, port: 8081 });
 

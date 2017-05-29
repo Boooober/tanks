@@ -44,7 +44,7 @@ User.statics.saveObject = function(userId: string, object: PlayerObject, callbac
     this.update({ _id: userId }, { $set: { unit } }, { upsert: true }, (e, u) => (callback || noop)(e, u));
 };
 
-User.statics.updateStats = function(userId: string, data: PlayerStatistics, callback: Function): void {
+User.statics.incrementStats = function(userId: string, data: PlayerStatistics, callback: Function): void {
     const statistics = Object.keys(data).reduce((stats: Object, key: string): Object => {
         stats[`statistics.${key}`] = data[key];
         return stats;
