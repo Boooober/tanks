@@ -1,8 +1,34 @@
 <div class="app-side-panel" [ngClass]="{'app-side-panel_opened': isOpened}">
-    <div class="app-side-panel__toggle">
-        <button (click)="toggle()">Toggle</button>
-    </div>
-    <div class="app-side-panel-container">
-        <app-user-statistics></app-user-statistics>
-    </div>
+    <app-panel-tabs>
+        <div class="app-side-panel-header">
+            <div class="app-side-panel__toggle">
+                <i class="app-side-panel__toggle-icon glyphicon glyphicon-backward"
+                   (click)="toggle()">
+                </i>
+            </div>
+            <app-tab-button [active]="true">
+                <div class="app-side-panel__toggle">
+                    <i class="app-side-panel__toggle-icon glyphicon glyphicon-move"></i>
+                </div>
+            </app-tab-button>
+            <app-tab-button>
+                <div class="app-side-panel__toggle">
+                    <i class="app-side-panel__toggle-icon glyphicon glyphicon-stats"></i>
+                </div>
+            </app-tab-button>
+        </div>
+
+        <div class="app-side-panel-container">
+            <app-tab-content [active]="true">
+                <div class="app-side-panel__content">
+                    <app-user-statistics></app-user-statistics>
+                </div>
+            </app-tab-content>
+            <app-tab-content>
+                <div class="app-side-panel__content">
+                    <app-user-controls></app-user-controls>
+                </div>
+            </app-tab-content>
+        </div>
+    </app-panel-tabs>
 </div>

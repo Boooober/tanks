@@ -1,3 +1,5 @@
 .app-user-statistics {
-    color: white;
+    &__heading {
+        vertical-align: middle;
+    }
 }

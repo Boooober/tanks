@@ -8,7 +8,7 @@ import { UserStatisticsService } from './users-statistics.service';
     styleUrls: ['./users-statistics.component.scss'],
     providers: [UserStatisticsService]
 })
-export class UsersStatisticsComponent implements OnInit{
+export class UsersStatisticsComponent implements OnInit {
     public statistics: UserStatistics[] = [];
 
     constructor (private UserStatisticsService: UserStatisticsService) {}

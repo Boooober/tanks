@@ -26,7 +26,9 @@ export class UserConnectionService {
 
     sendMessage(method, data): void {
         const message = { method, data };
-        this.socket.send(JSON.stringify(message));
+        if (this.socket.readyState === WebSocket.OPEN) {
+            this.socket.send(JSON.stringify(message));
+        }
     }
 
     startAction(action): void {

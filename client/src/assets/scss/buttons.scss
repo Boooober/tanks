@@ -1,0 +1,8 @@
+@mixin round-btn($size: 30px, $padding: 5px) {
+  border: 2px solid white;
+  border-radius: 50%;
+  padding: $padding;
+  width: $size;
+  height: $size;
+  cursor: pointer;
+}
