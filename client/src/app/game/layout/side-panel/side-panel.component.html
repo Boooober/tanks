@@ -1,0 +1,8 @@
+<div class="app-side-panel" [ngClass]="{'app-side-panel_opened': isOpened}">
+    <div class="app-side-panel__toggle">
+        <button (click)="toggle()">Toggle</button>
+    </div>
+    <div class="app-side-panel-container">
+        <app-user-statistics></app-user-statistics>
+    </div>
+</div>

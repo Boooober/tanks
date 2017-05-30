@@ -11,8 +11,8 @@ app.use(logger('dev'));
 app.use(bodyParser());
 app.use(express.static('build/client'));
 
-setupEndpoints(app);
 theGame(app);
+setupEndpoints(app);
 
 app.listen(8080, () => {
     console.log('Server started :)');

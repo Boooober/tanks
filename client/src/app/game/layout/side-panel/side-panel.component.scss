@@ -1,0 +1,32 @@
+@import '../../../../assets/scss/variables';
+
+.app-side-panel {
+    position: fixed;
+    top: 0;
+    left: 100%;
+    width: 500px;
+    height: 100%;
+    transition: .5s;
+
+    &-container {
+        height: 100%;
+        padding: 30px 20px;
+        overflow-y: auto;
+        background: $panel_color;
+    }
+
+    &__toggle {
+        top: 15px;
+        left: 15px;
+        position: absolute;
+        transition: .5s;
+        transform: translateX(-100px);
+    }
+
+    &_opened {
+        transform: translateX(-100%);
+        .app-side-panel__toggle {
+            transform: translateX(0);
+        }
+    }
+}

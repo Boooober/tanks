@@ -5,6 +5,8 @@ import { UIRouterModule } from 'ui-router-ng2';
 import { GameComponent } from './game.component';
 import { GameAreaComponent } from './layout/game-area/game-area.component';
 import { InfoPanelComponent } from './layout/info-panel/info-panel.component';
+import { SidePanelComponent } from './layout/side-panel/side-panel.component';
+import { UsersStatisticsComponent } from './components/users-statistics/users-statistics.component';
 
 import { GameRenderService } from './game-render.service';
 import { GameObjectsService } from './objects/game-objects.service';
@@ -17,15 +19,13 @@ import { routes } from './game.routes';
     declarations: [
         GameComponent,
         GameAreaComponent,
-        InfoPanelComponent
+        InfoPanelComponent,
+        SidePanelComponent,
+        UsersStatisticsComponent
     ],
     imports: [
         BrowserModule,
         UIRouterModule.forChild({ states: [...routes]})
-    ],
-    exports: [
-        GameAreaComponent,
-        InfoPanelComponent
     ],
     providers: [
         GameRenderService,
