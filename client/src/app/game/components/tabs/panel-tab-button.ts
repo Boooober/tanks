@@ -4,6 +4,7 @@ import { TabsComponent } from './panel-tabs';
 @Component({
     selector: 'app-tab-button',
     template: `<div class="app-tab-button" [ngClass]="{'active': active}"><ng-content></ng-content></div>`,
+    styleUrls: ['./panel-tab-button.scss']
 })
 export class TabButtonComponent implements OnInit {
     @Input()
