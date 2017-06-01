@@ -1,7 +1,8 @@
 export class PlayerStatistics {
-    score?: number;
-    totalShoots?: number;
-    successShoots?: number;
-    totalDamage?: number;
-    receivedDamage?: number;
+    username?: string;
+    score? = 0;
+    totalShoots? = 0;
+    successShoots? = 0;
+    totalDamage? = 0;
+    receivedDamage? = 0;
 }

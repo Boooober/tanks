@@ -1,6 +1,6 @@
 import { UserModel } from '../../database/database';
 
-export default function setupGameEndpoints(app) {
+export default function setupGameEndpoints(app): void {
     app.get('/api/game/statistics', function (req, res) {
 
         UserModel.find().select('name statistics').sort('-statistics.score').exec((err, users) => {

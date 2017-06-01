@@ -1,4 +1,4 @@
-import { PlayerObject } from '../objects/classes/player-object.class';
+import { PlayerUnit } from '../objects/classes/player-unit.class';
 import { PlayerStatistics } from './player-statistics.class';
 
 export class Player {
@@ -6,11 +6,13 @@ export class Player {
     name: string;
     email: string;
 
-    unit: PlayerObject;
+    unit: PlayerUnit;
     statistics: PlayerStatistics;
 
-    constructor(options: any) {
-        const { id, name, unit, statistics } = options;
-        Object.assign(this, { id, name, unit, statistics });
+    sessionId: string;
+
+    constructor(properties: any, options: any) {
+        const { id, name, unit, statistics } = properties;
+        Object.assign(this, { id, name, unit, statistics }, options);
     }
 }

@@ -1,6 +1,6 @@
 import { MovingObject } from './moving-object.class';
 
-export class PlayerObject extends MovingObject {
+export class PlayerUnit extends MovingObject {
     static TYPE = 'player';
 
     public username: string;
