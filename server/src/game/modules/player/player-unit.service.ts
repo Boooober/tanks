@@ -1,38 +1,31 @@
-import { Player } from '../classes/player.class';
-import { BulletObject } from './classes/bullet-object.class';
-import { PlayerObject, DEFAULT_UNIT_OPTIONS } from './classes/player-object.class';
-import GameObjectsService from './game-objects.service';
-import GameObjectsCalculationsService from './game-objects-calculations.service';
+import { Player } from '../../classes/player.class';
+import { BulletObject } from '../../objects/classes/bullet-object.class';
+import { PlayerUnit, DEFAULT_UNIT_OPTIONS } from '../../objects/classes/player-unit.class';
+import GameObject, { GameObjectsService } from '../../objects/game-objects.service';
+import GameObjectsCalculation, { GameObjectsCalculationsService } from '../../objects/game-objects-calculations.service';
 
-// export const ACTIONS_MAP = {
-//     37: 'moveLeft',
-//     65: 'moveLeft',
-//     39: 'moveRight',
-//     68: 'moveRight',
-//     38: 'moveUp',
-//     87: 'moveUp',
-//     40: 'moveDown',
-//     83: 'moveDown',
-//     32: 'doFire',
-//     13: 'doFire',
-//     82: 'restart'
-// };
-
-class GameUnitsObjectService {
-    create(sessionId: string, player: Player): void {
-        player.unit = new PlayerObject(
-            { objectId: player.id, username: player.name },
-            GameObjectsCalculationsService.getRandomPosition(),
-            this.resetUnit(player.unit)
-        );
-        GameObjectsService.addObject(player.unit);
+export class PlayerUnitService {
+    constructor(private GameObjectsService: GameObjectsService,
+                private GameObjectsCalculationsService: GameObjectsCalculationsService) {
     }
 
-    remove(unit: PlayerObject): void {
+    create(player: Player): void {
+        player.unit = new PlayerUnit(
+            { objectId: player.id, username: player.name, sessionId: player.sessionId },
+            this.GameObjectsCalculationsService.getRandomPosition(),
+            this.resetUnit(player.unit)
+        );
+        this.GameObjectsService.addObject(player.unit);
+    }
+
+    removeUnit(unit: PlayerUnit): void {
         unit.remove = true;
     }
 
-    executeAction(sessionId: string, player: Player, data: { action: number, value: any }): void {
+    executeAction(player: Player, data: { action: number, value: any }): void {
+        if (!player) {
+            return;
+        }
         const { unit } = player;
         const { action, value } = data;
 
@@ -40,7 +33,7 @@ class GameUnitsObjectService {
             switch (action) {
                 // Restart
                 case 82:
-                    this.create(sessionId, player);
+                    this.create(player);
                     break;
             }
         } else {
@@ -48,7 +41,7 @@ class GameUnitsObjectService {
                 // Do fire
                 case 13:
                 case 32:
-                    GameObjectsService.addObject(this.doAttack(unit, value));
+                    this.GameObjectsService.addObject(this.doAttack(unit, value));
                     break;
 
                 // Move up
@@ -78,33 +71,33 @@ class GameUnitsObjectService {
         }
     }
 
-    doAttack(unit: PlayerObject, value: boolean): BulletObject | null {
+    doAttack(unit: PlayerUnit, value: boolean): BulletObject | null {
         return value && unit.canAttack
-            ? GameObjectsCalculationsService.attack(unit)
+            ? this.GameObjectsCalculationsService.attack(unit)
             : null;
     }
 
-    moveUp(unit: PlayerObject, value: boolean): void {
+    moveUp(unit: PlayerUnit, value: boolean): void {
         unit.moveUp = value;
     }
 
-    moveLeft(unit: PlayerObject, value: boolean): void {
+    moveLeft(unit: PlayerUnit, value: boolean): void {
         unit.moveLeft = value;
     }
 
-    moveRight(unit: PlayerObject, value: boolean): void {
+    moveRight(unit: PlayerUnit, value: boolean): void {
         unit.moveRight = value;
     }
 
-    moveDown(unit: PlayerObject, value: boolean): void {
+    moveDown(unit: PlayerUnit, value: boolean): void {
         unit.moveDown = value;
     }
 
-    private isDeadUnit(unit: PlayerObject): boolean {
+    private isDeadUnit(unit: PlayerUnit): boolean {
         return unit.remove;
     }
 
-    private resetUnit(unit: PlayerObject): PlayerObject {
+    private resetUnit(unit: PlayerUnit): PlayerUnit {
         return Object.keys(DEFAULT_UNIT_OPTIONS).reduce((resetUnit, key) => {
             if (unit.hasOwnProperty(key)) {
                 if (key === 'health') {
@@ -114,8 +107,11 @@ class GameUnitsObjectService {
                 }
             }
             return resetUnit;
-        }, {} as PlayerObject);
+        }, {} as PlayerUnit);
     }
 }
 
-export default new GameUnitsObjectService;
+export default new PlayerUnitService(
+    GameObject,
+    GameObjectsCalculation
+);

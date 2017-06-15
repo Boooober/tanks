@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BaseObject } from './classes/base-object.class';
 import { BulletObject } from './classes/bullet-object.class';
-import { PlayerObject } from './classes/player-object.class';
+import { PlayerUnit } from './classes/player-unit.class';
 import { GameObjectsRendererService } from './renderers/game-object-renderer.service';
 
 
@@ -14,8 +14,8 @@ export class GameObjectsService {
                 case BulletObject.TYPE:
                     GameObjectsRendererService.drawBullet(context, object as BulletObject);
                     break;
-                case PlayerObject.TYPE:
-                    GameObjectsRendererService.drawPlayer(context, object as PlayerObject, images);
+                case PlayerUnit.TYPE:
+                    GameObjectsRendererService.drawPlayer(context, object as PlayerUnit, images);
                     break;
                 default:
             }

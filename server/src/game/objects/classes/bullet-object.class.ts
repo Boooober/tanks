@@ -1,5 +1,5 @@
 import { MovingObject } from './moving-object.class';
-import { PlayerObject } from './player-object.class';
+import { PlayerUnit } from './player-unit.class';
 
 export const DEFAULT_BULLET_OPTIONS = {
     speed: 5,
@@ -13,7 +13,7 @@ export class BulletObject extends MovingObject {
     static TYPE = 'bullet';
 
     public power: number;
-    public shooter: PlayerObject;
+    public shooter: PlayerUnit;
 
     constructor(options?: any) {
         super();

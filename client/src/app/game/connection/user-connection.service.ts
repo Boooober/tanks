@@ -32,11 +32,11 @@ export class UserConnectionService {
     }
 
     startAction(action): void {
-        this.sendMessage('action', { action, value: true });
+        this.sendMessage('unitAction', { action, value: true });
     }
 
     finishAction(action): void {
-        this.sendMessage('action', { action, value: false });
+        this.sendMessage('unitAction', { action, value: false });
     }
 
     private onMessage(event): void {
@@ -47,6 +47,12 @@ export class UserConnectionService {
                 break;
             case 'messageUpdates':
                 this.objectUpdates(data);
+                break;
+            case 'roundStart':
+                console.log('Rounds are working on back end: roundStart', data);
+                break;
+            case 'roundStatistics':
+                console.log('Rounds are working on back end: roundStatistics', data);
                 break;
         }
     }

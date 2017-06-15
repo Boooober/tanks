@@ -1,12 +1,14 @@
 import { BaseObject } from './classes/base-object.class';
+import { PlayerUnit } from './classes/player-unit.class';
 import { MovingObject } from './classes/moving-object.class';
-import { PlayerObject } from './classes/player-object.class';
 import { BulletObject } from './classes/bullet-object.class';
+import GameEvents, { GameEventsService } from '../game-events.service';
 
-import GameEvents from '../game-events.service';
-
-class GameObjectsCalculationsService {
+export class GameObjectsCalculationsService {
     private actions: { [action: string]: Array<Function> };
+
+    constructor(private GameEventsService: GameEventsService) {
+    }
 
     calculateBullet(object: BulletObject): void {
         this.moveForward(object);
@@ -19,7 +21,7 @@ class GameObjectsCalculationsService {
         this.updateCenter(object);
     };
 
-    calculatePlayer(object: PlayerObject): void {
+    calculatePlayer(object: PlayerUnit): void {
         if (object.moveLeft) {
             object.deg -= object.rotateSpeed;
         }
@@ -41,8 +43,8 @@ class GameObjectsCalculationsService {
         this.updateCenter(object);
     }
 
-    attack(player: PlayerObject): BulletObject {
-        GameEvents.exec('onFire', player);
+    attack(player: PlayerUnit): BulletObject {
+        this.GameEventsService.exec('shooting', player);
         player.canAttack = false;
         player.isAttacking = true;
         setTimeout(() => {
@@ -65,13 +67,13 @@ class GameObjectsCalculationsService {
                 if (this.hasCollision(bullet, object)) {
                     this.calculateBulletDamage(bullet, object);
                     this.calculateObjectDamageFromBullet(bullet, object);
-                    GameEvents.exec('onBulletCollisions', bullet, object);
+                    this.GameEventsService.exec('bulletCollision', bullet, object);
 
-                    if (object.type === PlayerObject.TYPE) {
-                        GameEvents.exec('onBulletPlayerCollisions', bullet, object, );
+                    if (object.type === PlayerUnit.TYPE) {
+                        this.GameEventsService.exec('bulletPlayerCollision', bullet, object as PlayerUnit);
 
                         if (object.health <= 0) {
-                            GameEvents.exec('onBulletLethalCollision', bullet, object);
+                            this.GameEventsService.exec('bulletLethalCollision', bullet, object as PlayerUnit);
                         }
                     }
                 }
@@ -79,7 +81,7 @@ class GameObjectsCalculationsService {
         });
     }
 
-    calculatePlayerCollisions(player: PlayerObject, objects: BaseObject[]): void {}
+    calculatePlayerCollisions(player: PlayerUnit, objects: BaseObject[]): void {}
 
     getRandomPosition(): { x: number, y: number, deg: number } {
         return {
@@ -112,13 +114,13 @@ class GameObjectsCalculationsService {
         object.centerY = object.y + object.height / 2;
     }
 
-    private canMoveForward(object: PlayerObject): boolean {
+    private canMoveForward(object: PlayerUnit): boolean {
         if (object.moveUp) {
             return true;
         }
         return false;
     }
-    private canMoveBackward(object: PlayerObject): boolean {
+    private canMoveBackward(object: PlayerUnit): boolean {
         if (object.moveDown) {
             return true;
         }
@@ -136,4 +138,4 @@ class GameObjectsCalculationsService {
     }
 }
 
-export default new GameObjectsCalculationsService;
+export default new GameObjectsCalculationsService(GameEvents);

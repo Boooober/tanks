@@ -13,11 +13,12 @@ export const DEFAULT_UNIT_OPTIONS = {
     isAttacking: false,
 };
 
-export class PlayerObject extends MovingObject {
+export class PlayerUnit extends MovingObject {
     static TYPE = 'player';
 
     public color: string;
     public username: string;
+    public sessionId: string;
 
     public moveUp: boolean;
     public moveDown: boolean;
@@ -32,6 +33,6 @@ export class PlayerObject extends MovingObject {
     constructor(...options: Array<any>) {
         super();
         Object.assign(this, DEFAULT_UNIT_OPTIONS, ...options);
-        this.type = PlayerObject.TYPE;
+        this.type = PlayerUnit.TYPE;
     }
 }

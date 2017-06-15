@@ -1,4 +1,4 @@
-import { PlayerObject } from '../classes/player-object.class';
+import { PlayerUnit } from '../classes/player-unit.class';
 import { BulletObject } from '../classes/bullet-object.class';
 import { PlayerObjectsRendererService } from './player-object-renderer.service';
 
@@ -14,7 +14,7 @@ export class GameObjectsRendererService {
         context.restore();
     };
 
-    static drawPlayer(context: CanvasRenderingContext2D, object: PlayerObject, images): void {
+    static drawPlayer(context: CanvasRenderingContext2D, object: PlayerUnit, images): void {
         PlayerObjectsRendererService.drawUnit(context, object, images);
         PlayerObjectsRendererService.drawHealth(context, object);
         PlayerObjectsRendererService.drawUsername(context, object);

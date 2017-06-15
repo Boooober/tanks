@@ -1,26 +1,28 @@
 import { BaseObject } from './classes/base-object.class';
 import { BulletObject } from './classes/bullet-object.class';
-import { PlayerObject } from './classes/player-object.class';
-import GameObjectsCalculationsService from './game-objects-calculations.service';
+import { PlayerUnit } from './classes/player-unit.class';
+import GameObjectsCalculations, { GameObjectsCalculationsService } from './game-objects-calculations.service';
 
 export class GameObjectsService {
     public objects: BaseObject[] = [];
 
+    constructor(private GameObjectsCalculationsService: GameObjectsCalculationsService) {
+    }
+
     /**
-     * Updating from game loop
-     * @see GameLoop
+     * @see GameLoopService
      */
     update(): void {
-        this.clearObjects();
+        this.filterObjects();
         this.objects.forEach(object => {
             switch (object.type) {
                 case BulletObject.TYPE:
-                    GameObjectsCalculationsService.calculateBullet(object as BulletObject);
-                    GameObjectsCalculationsService.calculateBulletCollisions(object as BulletObject, this.objects);
+                    this.GameObjectsCalculationsService.calculateBullet(object as BulletObject);
+                    this.GameObjectsCalculationsService.calculateBulletCollisions(object as BulletObject, this.objects);
                     break;
-                case PlayerObject.TYPE:
-                    GameObjectsCalculationsService.calculatePlayer(object as PlayerObject);
-                    GameObjectsCalculationsService.calculatePlayerCollisions(object as PlayerObject, this.objects);
+                case PlayerUnit.TYPE:
+                    this.GameObjectsCalculationsService.calculatePlayer(object as PlayerUnit);
+                    this.GameObjectsCalculationsService.calculatePlayerCollisions(object as PlayerUnit, this.objects);
                     break;
             }
         });
@@ -32,9 +34,13 @@ export class GameObjectsService {
         }
     }
 
-    clearObjects(): void {
+    clear(): void {
+        this.objects = [];
+    }
+
+    private filterObjects(): void {
         this.objects = this.objects.filter(object => !object.remove);
     }
 }
 
-export default new GameObjectsService;
+export default new GameObjectsService(GameObjectsCalculations);

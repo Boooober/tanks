@@ -1,4 +1,4 @@
-import { PlayerObject } from '../classes/player-object.class';
+import { PlayerUnit } from '../classes/player-unit.class';
 
 export const USERNAME_OFFSET = -16;
 export const USERNAME_FONT = '12px Arial';
@@ -11,7 +11,7 @@ export const HEALTH_FILL_STYLE = '#2cb32c';
 export const HEALTH_STROKE_STYLE = '#095a09';
 
 export class PlayerObjectsRendererService {
-    static drawUnit(context: CanvasRenderingContext2D, object: PlayerObject, images): void {
+    static drawUnit(context: CanvasRenderingContext2D, object: PlayerUnit, images): void {
         context.save();
         context.beginPath();
         context.translate(object.centerX, object.centerY);
@@ -21,7 +21,7 @@ export class PlayerObjectsRendererService {
         context.restore();
     }
 
-    static drawUsername(context: CanvasRenderingContext2D, object: PlayerObject): void {
+    static drawUsername(context: CanvasRenderingContext2D, object: PlayerUnit): void {
         context.save();
         context.beginPath();
         context.font = USERNAME_FONT;
@@ -33,7 +33,7 @@ export class PlayerObjectsRendererService {
         context.restore();
     }
 
-    static drawHealth(context: CanvasRenderingContext2D, object: PlayerObject): void {
+    static drawHealth(context: CanvasRenderingContext2D, object: PlayerUnit): void {
         context.save();
         context.beginPath();
         context.fillStyle = HEALTH_FILL_STYLE;

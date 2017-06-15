@@ -1,5 +1,5 @@
 import { PlayerStatistics } from '../../game/classes/player-statistics.class';
-import { PlayerObject, DEFAULT_UNIT_OPTIONS } from '../../game/objects/classes/player-object.class';
+import { PlayerUnit, DEFAULT_UNIT_OPTIONS } from '../../game/objects/classes/player-unit.class';
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
@@ -38,7 +38,7 @@ User.methods.validatePassword = function(password: string): string {
     return bcrypt.compareSync(password, this.password);
 };
 
-User.statics.saveObject = function(userId: string, object: PlayerObject, callback: Function): void {
+User.statics.saveObject = function(userId: string, object: PlayerUnit, callback: Function): void {
     const { speed, width, height, health, attackPower, attackSpeed, rotateSpeed } = object;
     const unit = { speed, width, height, health, attackPower, attackSpeed, rotateSpeed };
     this.update({ _id: userId }, { $set: { unit } }, { upsert: true }, (e, u) => (callback || noop)(e, u));
