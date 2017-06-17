@@ -1,0 +1,38 @@
+<div class="app-unit-info">
+    <section class="app-unit-info-section">
+        <h3 class="app-unit-info-section__username">Username: {{ getUsername() }}</h3>
+    </section>
+
+    <section class="app-unit-info-section">
+        <h3 class="app-unit-info-section__title">Unit info</h3>
+
+        <table class="table app-unit-info__table">
+            <tbody class="app-unit-info__tbody">
+            <tr *ngFor="let stat of getUnitInfo()">
+                <td>{{ stat.name }}</td>
+                <td>{{ stat.value }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="app-unit-info-section">
+        <h3 class="app-unit-info-section__title">Unit configuration</h3>
+        <div class="row">
+            <div class="col-xs-2">
+                <button type="button"
+                        class="btn btn-primary"
+                        (click)="resetScale()">Reset</button>
+            </div>
+            <div class="col-xs-10">
+                <nouislider [min]="minScale"
+                            [max]="maxScale"
+                            [step]="scaleStep"
+                            [connect]="[true, false]"
+                            [(ngModel)]="unitScale"
+                            (ngModelChange)="onScaleChange($event)">
+                </nouislider>
+            </div>
+        </div>
+    </section>
+</div>

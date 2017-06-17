@@ -21,6 +21,7 @@ export class GameObjectsService {
                     this.GameObjectsCalculationsService.calculateBulletCollisions(object as BulletObject, this.objects);
                     break;
                 case PlayerUnit.TYPE:
+                    this.GameObjectsCalculationsService.scaleUnitProperties(object as PlayerUnit);
                     this.GameObjectsCalculationsService.calculatePlayer(object as PlayerUnit);
                     this.GameObjectsCalculationsService.calculatePlayerCollisions(object as PlayerUnit, this.objects);
                     break;

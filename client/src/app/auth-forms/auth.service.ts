@@ -23,7 +23,7 @@ export class AuthService {
     }
 
     isAuthorized(): boolean {
-        return !! this.user;
+        return !!this.user;
     }
 
     getUser(): User {

@@ -1,19 +1,27 @@
 import { Player } from '../../classes/player.class';
+import { PlayerUnit } from '../../objects/classes/player-unit.class';
+
 import { UserModel } from '../../../database/database';
 import GameEvents, { GameEventsService } from '../../game-events.service';
 import GameAction, { GameActionsService } from '../../game-actions.service';
-import PlayerUnit, { PlayerUnitService } from './player-unit.service';
+import GameSessions, { GameSessionsService } from '../../game-sessions.service';
+import UnitManipulations, { UnitManipulationsService } from './unit-manipulations.service';
+import GameObjectsCalculations, { GameObjectsCalculationsService } from '../../objects/game-objects-calculations.service';
+
 
 export class PlayersService {
     private players: { [sessionId: string ]: Player } = {};
 
-    constructor(private PlayerUnitService: PlayerUnitService,
-                private GameEventsService: GameEventsService,
-                private GameActionsService: GameActionsService) {
+    constructor(private GameEventsService: GameEventsService,
+                private GameActionsService: GameActionsService,
+                private GameSessionsService: GameSessionsService,
+                private UnitManipulationsService: UnitManipulationsService,
+                private GameObjectsCalculationsService: GameObjectsCalculationsService) {
         this.GameEventsService.on('deleteSession', sessionId => this.remove(sessionId));
 
-        this.GameActionsService.registerAction('user', (sessionId, { id }) => this.setupPlayer(sessionId, id));
-        this.GameActionsService.registerAction('unitAction', (sessionId, data) => this.executeAction(sessionId, data));
+        this.GameActionsService.on('user', (sessionId, { id }) => this.setupPlayer(sessionId, id));
+        this.GameActionsService.on('unitAction', (sessionId, data) => this.executeAction(sessionId, data));
+        this.GameActionsService.on('unitUpdates', (sessionId, data) => this.updateUnitInfo(sessionId, data));
     }
 
     get(): Player[];
@@ -28,7 +36,7 @@ export class PlayersService {
         UserModel.findById(userId, (error, user) => {
             const player = new Player(user, { sessionId });
             this.players[sessionId] = player;
-            this.PlayerUnitService.create(player);
+            this.UnitManipulationsService.create(player);
         });
     }
 
@@ -37,17 +45,34 @@ export class PlayersService {
         const { id, unit } = player;
         UserModel.saveObject(id, unit);
         delete this.players[sessionId];
-        this.PlayerUnitService.removeUnit(unit);
+        this.UnitManipulationsService.removeUnit(unit);
     }
 
     executeAction(sessionId: string, data: { action: number, value: any }): void {
         const player = this.players[sessionId];
-        this.PlayerUnitService.executeAction(player, data);
+        this.UnitManipulationsService.executeAction(player, data);
+    }
+
+    getUnitInfo(sessionId: string): PlayerUnit | null {
+        const { unit = null } = this.get(sessionId) || {};
+        return unit;
+    }
+
+    updateUnitInfo(sessionId: string, data?: any /* TODO PlayerUnitDTO */): void {
+        const unit = this.getUnitInfo(sessionId);
+
+        if (data && data.hasOwnProperty('scale')) {
+            this.GameObjectsCalculationsService.updateUnitScale(unit, data.scale);
+        }
+
+        this.GameSessionsService.sendMessage(sessionId, 'unitUpdates', unit);
     }
 }
 
 export default new PlayersService(
-    PlayerUnit,
     GameEvents,
-    GameAction
+    GameAction,
+    GameSessions,
+    UnitManipulations,
+    GameObjectsCalculations
 );

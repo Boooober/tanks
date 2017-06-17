@@ -1,5 +1,4 @@
 import { Subscription } from 'rxjs/Rx';
-
 import { Injectable } from '@angular/core';
 import { BaseObject } from '../../objects/classes/base-object.class';
 import { UserConnectionService } from '../../connection/user-connection.service';
@@ -9,13 +8,11 @@ export class GameAreaService {
     private commandsCache = {};
     private objectsSubscription: Subscription;
 
-    constructor(private UserConnectionService: UserConnectionService) {
-        this.UserConnectionService.connect();
-    }
+    constructor(private UserConnectionService: UserConnectionService) {}
 
     subscribe(callback: (objects: BaseObject[]) => void): void {
-        this.objectsSubscription = this.UserConnectionService.getObjectsStream()
-            .subscribe((objects: BaseObject[]) => callback(objects));
+        this.objectsSubscription = this.UserConnectionService.getFilteredStream('objectUpdates')
+            .subscribe((objects) => callback(objects));
     }
 
     unsubscribe(): void {

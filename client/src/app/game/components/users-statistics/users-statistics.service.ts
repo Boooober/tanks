@@ -1,6 +1,6 @@
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { UserStatistics } from './user-statistics.class';
-import {Http} from "@angular/http";
 
 export const STATISTICS_ENDPOINT = 'api/game/statistics';
 

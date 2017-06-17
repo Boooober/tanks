@@ -1,16 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+
 import { NgModule } from '@angular/core';
-import { UIRouterModule } from 'ui-router-ng2';
+import { UIRouterModule } from '@uirouter/angular';
+import { NouisliderModule } from 'ng2-nouislider';
 
 import { GameComponent } from './game.component';
 import { GameAreaComponent } from './layout/game-area/game-area.component';
 // import { InfoPanelComponent } from './layout/info-panel/info-panel.component';
 import { SidePanelComponent } from './layout/side-panel/side-panel.component';
+import { UnitInfoComponent } from './components/unit-info/unit-info.component';
 import { UsersControlsComponent } from './components/user-controls/user-controls.component';
 import { UsersStatisticsComponent } from './components/users-statistics/users-statistics.component';
 import { TabsComponent } from './components/tabs/panel-tabs';
 import { TabButtonComponent } from './components/tabs/panel-tab-button';
 import { TabContentComponent } from './components/tabs/panel-tab-content';
+
+import { PlayerUnitModel } from './models/player-unit.model';
 
 import { GameRenderService } from './game-render.service';
 import { GameObjectsService } from './objects/game-objects.service';
@@ -25,6 +31,7 @@ import { routes } from './game.routes';
         GameAreaComponent,
         // InfoPanelComponent,
         SidePanelComponent,
+        UnitInfoComponent,
         UsersControlsComponent,
         TabsComponent,
         TabButtonComponent,
@@ -32,10 +39,13 @@ import { routes } from './game.routes';
         UsersStatisticsComponent
     ],
     imports: [
+        FormsModule,
         BrowserModule,
+        NouisliderModule,
         UIRouterModule.forChild({ states: [...routes]})
     ],
     providers: [
+        PlayerUnitModel,
         GameRenderService,
         GameObjectsService,
         UserConnectionService

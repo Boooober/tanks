@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StateService } from 'ui-router-ng2';
+import { StateService } from '@uirouter/angular';
 import { AuthService } from '../auth.service';
 
 const ACCOUNT_ALREADY_EXISTS_EXCEPTION = 'AccountAlreadyExistsException';
