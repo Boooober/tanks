@@ -6,19 +6,14 @@ import { GameEventsService } from '../../game-events.service';
 
 export abstract class StatisticsAbstract {
     protected statistics: { [sessionId: string]: PlayerStatistics } = {};
-    protected eventHandlers: Array<Function> = [];
 
     constructor(private GameEventsService: GameEventsService) {}
 
     init() {
-        this.eventHandlers.push(this.GameEventsService.on('shooting', player => this.onShooting(player)));
-        this.eventHandlers.push(this.GameEventsService.on('bulletCollision', (bullet, object) => this.onBulletCollision(bullet, object)));
-        this.eventHandlers.push(this.GameEventsService.on('bulletPlayerCollision', (bullet, object) => this.onBulletPlayerCollision(bullet, object)));
-        this.eventHandlers.push(this.GameEventsService.on('bulletLethalCollision', (bullet, object) => this.onBulletLethalCollision(bullet, object)));
-    }
-
-    destroy() {
-        this.eventHandlers.forEach(handler => handler());
+        this.GameEventsService.on('shooting', player => this.onShooting(player));
+        this.GameEventsService.on('bulletCollision', (bullet, object) => this.onBulletCollision(bullet, object));
+        this.GameEventsService.on('bulletPlayerCollision', (bullet, object) => this.onBulletPlayerCollision(bullet, object));
+        this.GameEventsService.on('bulletLethalCollision', (bullet, object) => this.onBulletLethalCollision(bullet, object));
     }
 
     clear() {

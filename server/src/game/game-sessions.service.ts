@@ -14,12 +14,12 @@ export class GameSessionsService {
         this.sessions[sessionId] = socket;
         socket.on('message', message => this.onMessage(sessionId, message));
         socket.on('close', () => this.deleteSession(sessionId));
-        this.GameEventsService.exec('createSession', sessionId);
+        this.GameEventsService.emit('createSession', sessionId);
     }
 
     deleteSession(sessionId: string): void {
         delete this.sessions[sessionId];
-        this.GameEventsService.exec('deleteSession', sessionId);
+        this.GameEventsService.emit('deleteSession', sessionId);
     }
 
     sendAllMessage(method: string, data?: any): void {
@@ -31,7 +31,7 @@ export class GameSessionsService {
 
     private onMessage(sessionId: string, message: string): void {
         const { method, data } = JSON.parse(message);
-        this.GameActionsService.executeAction(method, sessionId, data);
+        this.GameActionsService.emit(method, sessionId, data);
     }
 
     private postMessage(session: WebSocket, message: string) {

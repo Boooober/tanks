@@ -44,7 +44,7 @@ export class GameObjectsCalculationsService {
     }
 
     attack(player: PlayerUnit): BulletObject {
-        this.GameEventsService.exec('shooting', player);
+        this.GameEventsService.emit('shooting', player);
         player.canAttack = false;
         player.isAttacking = true;
         setTimeout(() => {
@@ -67,13 +67,13 @@ export class GameObjectsCalculationsService {
                 if (this.hasCollision(bullet, object)) {
                     this.calculateBulletDamage(bullet, object);
                     this.calculateObjectDamageFromBullet(bullet, object);
-                    this.GameEventsService.exec('bulletCollision', bullet, object);
+                    this.GameEventsService.emit('bulletCollision', bullet, object);
 
                     if (object.type === PlayerUnit.TYPE) {
-                        this.GameEventsService.exec('bulletPlayerCollision', bullet, object as PlayerUnit);
+                        this.GameEventsService.emit('bulletPlayerCollision', bullet, object as PlayerUnit);
 
                         if (object.health <= 0) {
-                            this.GameEventsService.exec('bulletLethalCollision', bullet, object as PlayerUnit);
+                            this.GameEventsService.emit('bulletLethalCollision', bullet, object as PlayerUnit);
                         }
                     }
                 }

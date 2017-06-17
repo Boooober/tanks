@@ -1,15 +1,10 @@
-export class GameActionsService {
-    private actions: { [name: string]: (sessionId?: string, data?: any) => void } = {};
+import { EventEmitter } from 'events';
 
-    registerAction(name, callback: (sessionId?: string, data?: any) => void): void {
-        this.actions[name] = callback;
-    }
-
-    executeAction(name: string, sessionId?: string, data?: any): void {
-        if (this.actions[name]) {
-            this.actions[name](sessionId, data);
-        }
-    }
+interface IGameActionsService {
+    on(event: 'user' | 'unitAction', listener: (sessionId?: string, data?: any) => void): this;
+    emit(event: 'user' | 'unitAction', sessionId?: string, data?: any): boolean;
 }
+
+export class GameActionsService extends EventEmitter implements IGameActionsService {}
 
 export default new GameActionsService();

@@ -12,8 +12,8 @@ export class PlayersService {
                 private GameActionsService: GameActionsService) {
         this.GameEventsService.on('deleteSession', sessionId => this.remove(sessionId));
 
-        this.GameActionsService.registerAction('user', (sessionId, { id }) => this.setupPlayer(sessionId, id));
-        this.GameActionsService.registerAction('unitAction', (sessionId, data) => this.executeAction(sessionId, data));
+        this.GameActionsService.on('user', (sessionId, { id }) => this.setupPlayer(sessionId, id));
+        this.GameActionsService.on('unitAction', (sessionId, data) => this.executeAction(sessionId, data));
     }
 
     get(): Player[];
