@@ -1,70 +1,49 @@
 import { BaseObject } from './classes/base-object.class';
 import { PlayerUnit } from './classes/player-unit.class';
-import { MovingObject } from './classes/moving-object.class';
 import { BulletObject } from './classes/bullet-object.class';
 import GameEvents, { GameEventsService } from '../game-events.service';
 
 export class GameObjectsCalculationsService {
-    private actions: { [action: string]: Array<Function> };
+    constructor(private GameEventsService: GameEventsService) {}
 
-    constructor(private GameEventsService: GameEventsService) {
-    }
+    calculateBullet(bullet: BulletObject): void {
+        bullet.moveForward();
+        bullet.updateCenter();
 
-    calculateBullet(object: BulletObject): void {
-        this.moveForward(object);
-        if (object.x < 0 ||
-            object.y < 0 ||
-            object.x > 6666 ||
-            object.y > 6666) {
-            object.remove = true;
+        if (bullet.x < 0 ||
+            bullet.y < 0 ||
+            bullet.x > 6666 ||
+            bullet.y > 6666) {
+            bullet.remove = true;
         }
-        this.updateCenter(object);
     };
 
-    calculatePlayer(object: PlayerUnit): void {
-        if (object.moveLeft) {
-            object.deg -= object.rotateSpeed;
+    calculatePlayer(playerUnit: PlayerUnit): void {
+        if (playerUnit.moveLeft) {
+            playerUnit.rotateLeft();
         }
-        if (object.moveRight) {
-            object.deg += object.rotateSpeed;
+        if (playerUnit.moveRight) {
+            playerUnit.rotateRight();
         }
-        if (object.deg < 0) {
-            object.deg = 360;
+        if (playerUnit.moveUp && playerUnit.canMoveForward()) {
+            playerUnit.moveForward();
         }
-        if (object.deg > 360) {
-            object.deg = 0;
+        if (playerUnit.moveDown && playerUnit.canMoveBackward()) {
+            playerUnit.moveBackward();
         }
-        if (this.canMoveForward(object)) {
-            this.moveForward(object);
-        }
-        if (this.canMoveBackward(object)) {
-            this.moveBackward(object);
-        }
-        this.updateCenter(object);
+        playerUnit.updateCenter();
     }
 
-    attack(player: PlayerUnit): BulletObject {
-        this.GameEventsService.emit('shooting', player);
-        player.canAttack = false;
-        player.isAttacking = true;
-        setTimeout(() => {
-            player.canAttack = true;
-            player.isAttacking = false;
-        }, 1000 / player.attackSpeed);
-
-        return new BulletObject({
-            x: player.x + (player.width / 2),
-            y: player.y + (player.height / 2),
-            deg: player.deg,
-            power: player.attackPower,
-            shooter: player
-        });
+    attack(playerUnit: PlayerUnit): BulletObject {
+        this.GameEventsService.emit('shooting', playerUnit);
+        const bulletOptions = playerUnit.doAttack();
+        return new BulletObject(bulletOptions);
     }
 
     calculateBulletCollisions(bullet: BulletObject, objects: BaseObject[]): void {
         objects.forEach(object => {
             if (object !== bullet && object !== bullet.shooter) {
-                if (this.hasCollision(bullet, object)) {
+                if (bullet.isCollidedWith(object)) {
                     this.calculateBulletDamage(bullet, object);
                     this.calculateObjectDamageFromBullet(bullet, object);
                     this.GameEventsService.emit('bulletCollision', bullet, object);
@@ -81,7 +60,7 @@ export class GameObjectsCalculationsService {
         });
     }
 
-    calculatePlayerCollisions(player: PlayerUnit, objects: BaseObject[]): void {}
+    calculatePlayerCollisions(playerUnit: PlayerUnit, objects: BaseObject[]): void {}
 
     getRandomPosition(): { x: number, y: number, deg: number } {
         return {
@@ -91,11 +70,29 @@ export class GameObjectsCalculationsService {
         };
     }
 
-    private hasCollision(object1: BaseObject, object2: BaseObject): boolean {
-        return object1.x < object2.x + object2.width &&
-            object1.x + object1.width > object2.x &&
-            object1.y < object2.y + object2.height &&
-            object1.height + object1.y > object2.y;
+    updateUnitScale(playerUnit: PlayerUnit, newScale: number): void {
+        const [currentScale, previousScale] = playerUnit.scale;
+        console.log('Updating unit scales: previous - %d, current - %d', previousScale, currentScale);
+        playerUnit.scale = [newScale, currentScale];
+    }
+
+    scaleUnitProperties(playerUnit: PlayerUnit): void {
+        const [currentScale, previousScale] = playerUnit.scale;
+        if (currentScale === previousScale) { return; }
+
+        console.log('Using unit scales: previous - %d, current - %d', previousScale, currentScale);
+
+        const scale = currentScale / previousScale;
+        this.updateUnitScale(playerUnit, currentScale);
+
+        playerUnit.width = this.roundToDecimal(playerUnit.width * scale);
+        playerUnit.height = this.roundToDecimal(playerUnit.height * scale);
+        playerUnit.health = this.roundToDecimal(playerUnit.health * scale);
+        playerUnit.maxHealth = this.roundToDecimal(playerUnit.maxHealth * scale);
+        playerUnit.speed = this.roundToDecimal(playerUnit.speed / scale);
+        playerUnit.rotateSpeed = this.roundToDecimal(playerUnit.rotateSpeed / scale);
+        playerUnit.attackSpeed = this.roundToDecimal(playerUnit.attackSpeed / scale);
+        playerUnit.attackPower = this.roundToDecimal(playerUnit.attackPower * scale);
     }
 
     private calculateBulletDamage(bullet: BulletObject, object: BaseObject): void {
@@ -109,32 +106,9 @@ export class GameObjectsCalculationsService {
         }
     }
 
-    private updateCenter(object: BaseObject): void {
-        object.centerX = object.x + object.width / 2;
-        object.centerY = object.y + object.height / 2;
-    }
-
-    private canMoveForward(object: PlayerUnit): boolean {
-        if (object.moveUp) {
-            return true;
-        }
-        return false;
-    }
-    private canMoveBackward(object: PlayerUnit): boolean {
-        if (object.moveDown) {
-            return true;
-        }
-        return false;
-    }
-
-    private moveForward(object: MovingObject): void {
-        object.x += object.speed * Math.sin(object.deg * (Math.PI / 180));
-        object.y -= object.speed * Math.cos(object.deg * (Math.PI / 180));
-    }
-
-    private moveBackward(object: MovingObject): void {
-        object.x -= object.speed * Math.sin(object.deg * (Math.PI / 180));
-        object.y += object.speed * Math.cos(object.deg * (Math.PI / 180));
+    private roundToDecimal(number: number, decimal: number = 2): number {
+        const digit = Number(`1e${decimal}`);
+        return Math.round(number * digit) / digit;
     }
 }
 

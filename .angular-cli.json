@@ -8,7 +8,7 @@
       "root": "client/src",
       "outDir": "build/client",
       "assets": [
-        "assets",
+        "assets/svg",
         "favicon.ico"
       ],
       "index": "index.html",
@@ -22,8 +22,8 @@
         "styles.scss"
       ],
       "scripts": [],
+      "environmentSource": "environments/environment.ts",
       "environments": {
-        "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }

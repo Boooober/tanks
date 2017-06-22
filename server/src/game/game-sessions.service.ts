@@ -22,6 +22,11 @@ export class GameSessionsService {
         this.GameEventsService.emit('deleteSession', sessionId);
     }
 
+    sendMessage(sessionId: string, method: string, data?: any): void {
+        const message = JSON.stringify({ method, data });
+        this.postMessage(this.sessions[sessionId], message);
+    }
+
     sendAllMessage(method: string, data?: any): void {
         const message = JSON.stringify({ method, data });
         Object.keys(this.sessions).forEach(sessionId => {

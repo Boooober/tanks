@@ -6,6 +6,7 @@ export class BaseObject {
     public width: number;
     public height: number;
     public health: number;
+    public maxHealth: number;
     public centerX: number;
     public centerY: number;
 }

@@ -2,6 +2,7 @@ import { PlayerUnit } from '../classes/player-unit.class';
 import { BulletObject } from '../classes/bullet-object.class';
 import { PlayerObjectsRendererService } from './player-object-renderer.service';
 
+
 export class GameObjectsRendererService {
     static drawBullet(context: CanvasRenderingContext2D, object: BulletObject): void {
         context.save();

@@ -1,4 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+
 import { NgModule } from '@angular/core';
 import { UIRouterModule } from '@uirouter/angular';
 import { NouisliderModule } from 'ng2-nouislider';
@@ -37,6 +39,7 @@ import { routes } from './game.routes';
         UsersStatisticsComponent
     ],
     imports: [
+        FormsModule,
         BrowserModule,
         NouisliderModule,
         UIRouterModule.forChild({ states: [...routes]})

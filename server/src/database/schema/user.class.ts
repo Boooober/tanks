@@ -17,7 +17,8 @@ const User = new Schema({
         receivedDamage: { type: Number, default: 0 }
     },
     unit: {
-        color: { type: String, default: DEFAULT_UNIT_OPTIONS.color },
+        scale: { type: Array, default: DEFAULT_UNIT_OPTIONS.scale },
+        color: { type: Object, default: DEFAULT_UNIT_OPTIONS.color },
         speed: { type: Number, default: DEFAULT_UNIT_OPTIONS.speed },
         width: { type: Number, default: DEFAULT_UNIT_OPTIONS.width },
         height: { type: Number, default: DEFAULT_UNIT_OPTIONS.height },
@@ -39,8 +40,8 @@ User.methods.validatePassword = function(password: string): string {
 };
 
 User.statics.saveObject = function(userId: string, object: PlayerUnit, callback: Function): void {
-    const { speed, width, height, health, attackPower, attackSpeed, rotateSpeed } = object;
-    const unit = { speed, width, height, health, attackPower, attackSpeed, rotateSpeed };
+    const { speed, width, height, health, attackPower, attackSpeed, rotateSpeed, scale, color } = object;
+    const unit = { speed, width, height, health, attackPower, attackSpeed, rotateSpeed, scale, color };
     this.update({ _id: userId }, { $set: { unit } }, { upsert: true }, (e, u) => (callback || noop)(e, u));
 };
 
