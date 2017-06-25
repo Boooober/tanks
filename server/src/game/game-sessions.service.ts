@@ -29,8 +29,8 @@ export class GameSessionsService {
         });
     }
 
-    private onMessage(sessionId: string, message: string): void {
-        const { method, data } = JSON.parse(message);
+    private onMessage(sessionId: string, message: WebSocket.Data): void {
+        const { method, data } = JSON.parse(message as string);
         this.GameActionsService.emit(method, sessionId, data);
     }
 

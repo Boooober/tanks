@@ -1,4 +1,4 @@
-import {StateService} from 'ui-router-ng2';
+import {StateService} from '@uirouter/angular';
 import {GameComponent} from './game.component';
 import {AuthService} from '../auth-forms/auth.service';
 

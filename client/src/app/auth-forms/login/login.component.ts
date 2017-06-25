@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StateService } from 'ui-router-ng2';
+import { StateService } from '@uirouter/angular';
 import { AuthService } from '../auth.service';
 
 const WRONG_ACCOUNT_PASSWORD_EXCEPTION = 'WrongAccountPasswordException';
