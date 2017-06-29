@@ -1,14 +1,15 @@
 import { BaseModel } from './base.model';
-import { PlayerUnit } from '../objects/classes/player-unit.class';
+import { PlayerUnitInfoBaseDTO } from '../../../../../common/objects/dto/player-unit-info.base.dto.class';
 
-export class PlayerUnitModel extends BaseModel {
-    get(): PlayerUnit {
-        return super.get() as PlayerUnit;
+export class PlayerUnitInfoModel extends BaseModel {
+    get(): PlayerUnitInfoBaseDTO {
+        return super.get() as PlayerUnitInfoBaseDTO;
     }
 
     getScale(): number {
-        const { scale } = this.get();
-        return scale && scale[0];
+        const { modifiers = [] } = this.get();
+        const scaleModifier = modifiers.find(modifier => modifier.name === 'ScaleModifier');
+        return scaleModifier ? scaleModifier.options.scale : 1;
     }
 
     getUsername(): string {
@@ -31,6 +32,10 @@ export class PlayerUnitModel extends BaseModel {
 
     getMaxHealth(): number {
         return this.get().maxHealth;
+    }
+
+    getDefence(): number {
+        return this.get().defence;
     }
 
     getSpeed(): number {

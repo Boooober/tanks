@@ -1,4 +1,4 @@
-import { Modifier } from './modifier.class';
+import { Modifier } from '../modifiers/modifier.class';
 import { MovingObject } from './moving-object.class';
 
 export const DEFAULT_UNIT_OPTIONS = {
@@ -6,6 +6,7 @@ export const DEFAULT_UNIT_OPTIONS = {
     width: 32,
     height: 48,
     health: 100,
+    defence: 1,
     maxHealth: 100,
     rotateSpeed: 3,
     attackSpeed: 2,
@@ -13,7 +14,7 @@ export const DEFAULT_UNIT_OPTIONS = {
     canAttack: true,
     isAttacking: false,
 
-    scale: [1, 1],
+    modifiers: {},
     color: { r: 203, g: 203, b: 203 }
 };
 
@@ -33,14 +34,14 @@ export class PlayerUnit extends MovingObject {
     public attackSpeed: number;
     public attackPower: number;
 
-    public scale: [number, number];
-    public modifiers: Modifier[];
+    public modifiers: { prop: Modifier[], all: Modifier[] };
 
     constructor(...options: Array<any>) {
         super();
         Object.assign(this, DEFAULT_UNIT_OPTIONS, ...options);
         this.type = PlayerUnit.TYPE;
         this.resetUnitHealth();
+        this.generateRandomPosition();
     }
 
     doAttack(): { x: number, y: number, deg: number, power: number, shooter: PlayerUnit } {
@@ -49,13 +50,13 @@ export class PlayerUnit extends MovingObject {
         setTimeout(() => {
             this.canAttack = true;
             this.isAttacking = false;
-        }, 1000 / this.attackSpeed);
+        }, 1000 / this.getAttackSpeed());
 
         return {
-            x: this.x + (this.width / 2),
-            y: this.y + (this.height / 2),
+            x: this.x + (this.getWidth() / 2),
+            y: this.y + (this.getHeight() / 2),
             deg: this.deg,
-            power: this.attackPower,
+            power: this.getAttackPower(),
             shooter: this
         }
     }
@@ -64,5 +65,91 @@ export class PlayerUnit extends MovingObject {
         this.health = this.health > 0
             ? this.health
             : DEFAULT_UNIT_OPTIONS.health;
+    }
+
+    getWidth(): number {
+        return this.applyModifiers('width');
+    }
+
+    getHeight(): number {
+        return this.applyModifiers('height');
+    }
+
+    getHealth(): number {
+        return this.applyModifiers('health');
+    }
+
+    getDefence(): number {
+        return this.applyModifiers('defence');
+    }
+
+    getMaxHealth(): number {
+        return this.applyModifiers('maxHealth');
+    }
+
+    getAttackPower(): number {
+        return this.applyModifiers('attackPower');
+    }
+
+    getAttackSpeed(): number {
+        return this.applyModifiers('attackSpeed');
+    }
+
+    getRotateSpeed(): number {
+        return this.applyModifiers('rotateSpeed');
+    }
+
+    getMovementSpeed(): number {
+        return this.applyModifiers('speed');
+    }
+
+    /**
+     * Should be in a mixin object
+     */
+    addModifier(modifier: Modifier): Function {
+        [...modifier.properties, 'all'].forEach(property => {
+            this.modifiers[property] = this.modifiers[property] || [];
+            this.modifiers[property].push(modifier);
+        });
+        return () => this.removeModifier(modifier);
+    }
+
+    /**
+     * Should be in a mixin object
+     */
+    removeModifier(obsoleteModifier: Modifier): void {
+        [...obsoleteModifier.properties, 'all'].forEach(property => {
+            this.modifiers[property] = (this.modifiers[property] || [])
+                .filter(modifier => modifier.name !== obsoleteModifier.name);
+        });
+    }
+
+    /**
+     * Should be in a mixin object
+     */
+    updateModifier(modifier: Modifier): void {
+        this.removeModifier(modifier);
+        this.addModifier(modifier);
+    }
+
+    /**
+     * Should be in a mixin object
+     */
+    getModifiers():  Array<{ name: string, options: object }> { // TODO ModifiersDTO
+        return (this.modifiers.all || []).map(modifier => ({
+            name: modifier.name,
+            options: modifier.options
+        }));
+    }
+
+    /**
+     * Should be in a mixin object
+     */
+    applyModifiers(prop: string): number {
+        return (this.modifiers[prop] || [])
+            .reduce(
+                (value, modifier: Modifier) => modifier.handle(prop, value),
+                this[prop]
+            );
     }
 }

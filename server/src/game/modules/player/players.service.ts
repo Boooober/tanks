@@ -6,8 +6,8 @@ import GameEvents, { GameEventsService } from '../../game-events.service';
 import GameAction, { GameActionsService } from '../../game-actions.service';
 import GameSessions, { GameSessionsService } from '../../game-sessions.service';
 import UnitManipulations, { UnitManipulationsService } from './unit-manipulations.service';
-import GameObjectsCalculations, { GameObjectsCalculationsService } from '../../objects/game-objects-calculations.service';
-
+import { ScaleModifier } from '../../objects/modifiers/scale-modifier.class';
+import { PlayerUnitInfoDTO } from '../../objects/dto/player-unit-info.dto.class';
 
 export class PlayersService {
     private players: { [sessionId: string ]: Player } = {};
@@ -15,8 +15,7 @@ export class PlayersService {
     constructor(private GameEventsService: GameEventsService,
                 private GameActionsService: GameActionsService,
                 private GameSessionsService: GameSessionsService,
-                private UnitManipulationsService: UnitManipulationsService,
-                private GameObjectsCalculationsService: GameObjectsCalculationsService) {
+                private UnitManipulationsService: UnitManipulationsService) {
         this.GameEventsService.on('deleteSession', sessionId => this.remove(sessionId));
 
         this.GameActionsService.on('user', (sessionId, { id }) => this.setupPlayer(sessionId, id));
@@ -61,11 +60,14 @@ export class PlayersService {
     updateUnitInfo(sessionId: string, data?: any /* TODO PlayerUnitDTO */): void {
         const unit = this.getUnitInfo(sessionId);
 
+        if (!unit) { return; }
+
+        // TODO move logic to better place
         if (data && data.hasOwnProperty('scale')) {
-            this.GameObjectsCalculationsService.updateUnitScale(unit, data.scale);
+            unit.updateModifier(new ScaleModifier({ scale: data.scale }));
         }
 
-        this.GameSessionsService.sendMessage(sessionId, 'unitUpdates', unit);
+        this.GameSessionsService.sendMessage(sessionId, 'unitUpdates', new PlayerUnitInfoDTO(unit));
     }
 }
 
@@ -73,6 +75,5 @@ export default new PlayersService(
     GameEvents,
     GameAction,
     GameSessions,
-    UnitManipulations,
-    GameObjectsCalculations
+    UnitManipulations
 );

@@ -1,5 +1,5 @@
-import { MovingObject } from './moving-object.class';
+import { BulletObjectBaseDTO } from '../../../../../../common/objects/dto/bullet-object.base.dto.class';
 
-export class BulletObject extends MovingObject {
+export class BulletObject extends BulletObjectBaseDTO {
     static TYPE = 'bullet';
 }

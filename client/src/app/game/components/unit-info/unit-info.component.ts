@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Rx';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PlayerUnitModel } from '../../models/player-unit.model';
+import { PlayerUnitInfoModel } from '../../models/player-unit-info.model';
 import { UserConnectionService } from '../../connection/user-connection.service';
 
 export const UNIT_POLLING_INTERVAL = 1000;
@@ -18,12 +18,12 @@ export class UnitInfoComponent implements OnInit, OnDestroy {
 
     private unitSubscription$: Subscription;
 
-    constructor(private PlayerUnitModel: PlayerUnitModel,
+    constructor(private PlayerUnitInfoModel: PlayerUnitInfoModel,
                 private UserConnectionService: UserConnectionService) {
     }
 
     ngOnInit(): void {
-        this.unitScale = 1;
+        this.unitScale = this.PlayerUnitInfoModel.getScale();
         this.unitSubscription$ = this.UserConnectionService
             .pollFilteredStream(
                 'unitUpdates',
@@ -31,8 +31,8 @@ export class UnitInfoComponent implements OnInit, OnDestroy {
                 () => this.UserConnectionService.sendMessage('unitUpdates')
             )
             .subscribe(unit => {
-                this.PlayerUnitModel.update(unit);
-                this.unitScale = this.PlayerUnitModel.getScale();
+                this.PlayerUnitInfoModel.update(unit);
+                this.unitScale = this.PlayerUnitInfoModel.getScale();
             });
     }
 
@@ -41,18 +41,19 @@ export class UnitInfoComponent implements OnInit, OnDestroy {
     }
 
     getUsername(): string {
-        return this.PlayerUnitModel.getUsername();
+        return this.PlayerUnitInfoModel.getUsername();
     }
 
     getUnitInfo(): Array<{ name: string, value: string | number }> {
         return [
-            { name: 'Speed', value: this.PlayerUnitModel.getSpeed() },
-            { name: 'Health', value: `${this.PlayerUnitModel.getHealth()} / ${this.PlayerUnitModel.getMaxHealth()}` },
-            { name: 'Damage', value: `${this.PlayerUnitModel.getDamage()} points per sec` },
-            { name: 'Attack speed', value: `${this.PlayerUnitModel.getAttackSpeed()} hits per sec` },
-            { name: 'Rotate speed', value: this.PlayerUnitModel.getRotateSpeed() },
-            { name: 'Scale', value: `${this.PlayerUnitModel.getScale()}` },
-            { name: 'Dimensions', value: `${this.PlayerUnitModel.getDimensions()[0]}x${this.PlayerUnitModel.getDimensions()[1]}` }
+            { name: 'Speed', value: this.PlayerUnitInfoModel.getSpeed() },
+            { name: 'Health', value: `${this.PlayerUnitInfoModel.getHealth()} / ${this.PlayerUnitInfoModel.getMaxHealth()}` },
+            { name: 'Damage', value: `${this.PlayerUnitInfoModel.getDamage()} points per sec` },
+            { name: 'Defence', value: this.PlayerUnitInfoModel.getDefence() },
+            { name: 'Attack speed', value: `${this.PlayerUnitInfoModel.getAttackSpeed()} hits per sec` },
+            { name: 'Rotate speed', value: this.PlayerUnitInfoModel.getRotateSpeed() },
+            { name: 'Scale', value: `${this.PlayerUnitInfoModel.getScale()}` },
+            { name: 'Dimensions', value: `${this.PlayerUnitInfoModel.getDimensions()[0]}x${this.PlayerUnitInfoModel.getDimensions()[1]}` }
         ];
     }
 

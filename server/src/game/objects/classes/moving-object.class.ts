@@ -5,27 +5,27 @@ export class MovingObject extends BaseObject {
     public rotateSpeed: number;
 
     rotateLeft(): void {
-        this.deg -= this.rotateSpeed;
+        this.deg -= this.getRotateSpeed();
         if (this.deg < 0) {
             this.deg += 360;
         }
     }
 
     rotateRight(): void {
-        this.deg += this.rotateSpeed;
+        this.deg += this.getRotateSpeed();
         if (this.deg > 360) {
             this.deg -= 360;
         }
     }
 
     moveForward(): void {
-        this.x += this.speed * Math.sin(this.deg * (Math.PI / 180));
-        this.y -= this.speed * Math.cos(this.deg * (Math.PI / 180));
+        this.x += this.getMovementSpeed() * Math.sin(this.deg * (Math.PI / 180));
+        this.y -= this.getMovementSpeed() * Math.cos(this.deg * (Math.PI / 180));
     }
 
     moveBackward(): void {
-        this.x -= this.speed * Math.sin(this.deg * (Math.PI / 180));
-        this.y += this.speed * Math.cos(this.deg * (Math.PI / 180));
+        this.x -= this.getMovementSpeed() * Math.sin(this.deg * (Math.PI / 180));
+        this.y += this.getMovementSpeed() * Math.cos(this.deg * (Math.PI / 180));
     }
 
     canMoveForward(): boolean {
@@ -36,5 +36,13 @@ export class MovingObject extends BaseObject {
     canMoveBackward(): boolean {
         /** TODO area restrictions */
         return true;
+    }
+
+    getRotateSpeed(): number {
+        return this.rotateSpeed;
+    }
+
+    getMovementSpeed(): number {
+        return this.speed;
     }
 }

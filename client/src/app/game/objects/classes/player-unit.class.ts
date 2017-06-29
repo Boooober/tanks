@@ -1,14 +1,8 @@
-import { MovingObject } from './moving-object.class';
+import { PlayerUnitObjectBaseDTO } from '../../../../../../common/objects/dto/player-unit-object.base.dto.class';
 
-export class PlayerUnit extends MovingObject {
+export class PlayerUnit extends PlayerUnitObjectBaseDTO {
     static TYPE = 'player';
 
-    public scale: number;
-    public username: string;
-    public attackSpeed: number;
-    public attackPower: number;
-    public isAttacking: boolean;
     public fireImage: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement;
     public image: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement;
-    public color: { r: number, g: number, b: number };
 }

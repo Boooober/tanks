@@ -21,7 +21,7 @@ export class GameLoopService {
 
     private tick(): void {
         this.GameObjectsService.update();
-        this.GameSessionsService.sendAllMessage('objectUpdates', this.GameObjectsService.objects);
+        this.GameSessionsService.sendAllMessage('objectUpdates', this.GameObjectsService.getDto());
     }
 }
 

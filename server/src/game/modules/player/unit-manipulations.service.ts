@@ -12,16 +12,16 @@ export class UnitManipulationsService {
     }
 
     create(player: Player): void {
-        player.unit = new PlayerUnit(
-            { objectId: player.id, username: player.name, sessionId: player.sessionId },
-            this.GameObjectsCalculationsService.getRandomPosition()
-        );
-        console.log('new player', player.unit);
-        this.GameObjectsService.addObject(player.unit);
+        player.unit = new PlayerUnit({
+            objectId: player.id,
+            username: player.name,
+            sessionId: player.sessionId
+        });
+        this.GameObjectsService.add(player.unit);
     }
 
     removeUnit(unit: PlayerUnit): void {
-        unit.remove = true;
+        unit.remove();
     }
 
     executeAction(player: Player, data: { action: number, value: any }): void {
@@ -31,7 +31,7 @@ export class UnitManipulationsService {
         const { unit } = player;
         const { action, value } = data;
 
-        if (this.isDeadUnit(unit)) {
+        if (!unit.exists()) {
             switch (action) {
                 case KEY.R:
                     this.create(player);
@@ -41,7 +41,7 @@ export class UnitManipulationsService {
             switch (action) {
                 case KEY.SPACE:
                 case KEY.ENTER:
-                    this.GameObjectsService.addObject(this.doAttack(unit, value));
+                    this.GameObjectsService.add(this.doAttack(unit, value));
                     break;
                 case KEY.W:
                 case KEY.UP:
@@ -58,6 +58,9 @@ export class UnitManipulationsService {
                 case KEY.S:
                 case KEY.DOWN:
                     this.moveDown(unit, value);
+                    break;
+                case KEY.R:
+                    if (value) { unit.generateRandomPosition(); }
                     break;
             }
         }
@@ -83,10 +86,6 @@ export class UnitManipulationsService {
 
     moveDown(playerUnit: PlayerUnit, value: boolean): void {
         playerUnit.moveDown = value;
-    }
-
-    private isDeadUnit(playerUnit: PlayerUnit): boolean {
-        return playerUnit.remove;
     }
 }
 

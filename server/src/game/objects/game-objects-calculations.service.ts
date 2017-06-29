@@ -14,7 +14,7 @@ export class GameObjectsCalculationsService {
             bullet.y < 0 ||
             bullet.x > 6666 ||
             bullet.y > 6666) {
-            bullet.remove = true;
+            bullet.remove();
         }
     };
 
@@ -62,53 +62,15 @@ export class GameObjectsCalculationsService {
 
     calculatePlayerCollisions(playerUnit: PlayerUnit, objects: BaseObject[]): void {}
 
-    getRandomPosition(): { x: number, y: number, deg: number } {
-        return {
-            x: Math.floor(Math.random() * 1000),
-            y: Math.floor(Math.random() * 700),
-            deg: Math.floor(Math.random() * 360)
-        };
-    }
-
-    updateUnitScale(playerUnit: PlayerUnit, newScale: number): void {
-        const [currentScale, previousScale] = playerUnit.scale;
-        console.log('Updating unit scales: previous - %d, current - %d', previousScale, currentScale);
-        playerUnit.scale = [newScale, currentScale];
-    }
-
-    scaleUnitProperties(playerUnit: PlayerUnit): void {
-        const [currentScale, previousScale] = playerUnit.scale;
-        if (currentScale === previousScale) { return; }
-
-        console.log('Using unit scales: previous - %d, current - %d', previousScale, currentScale);
-
-        const scale = currentScale / previousScale;
-        this.updateUnitScale(playerUnit, currentScale);
-
-        playerUnit.width = this.roundToDecimal(playerUnit.width * scale);
-        playerUnit.height = this.roundToDecimal(playerUnit.height * scale);
-        playerUnit.health = this.roundToDecimal(playerUnit.health * scale);
-        playerUnit.maxHealth = this.roundToDecimal(playerUnit.maxHealth * scale);
-        playerUnit.speed = this.roundToDecimal(playerUnit.speed / scale);
-        playerUnit.rotateSpeed = this.roundToDecimal(playerUnit.rotateSpeed / scale);
-        playerUnit.attackSpeed = this.roundToDecimal(playerUnit.attackSpeed / scale);
-        playerUnit.attackPower = this.roundToDecimal(playerUnit.attackPower * scale);
-    }
-
     private calculateBulletDamage(bullet: BulletObject, object: BaseObject): void {
-        object.health -= bullet.power;
-        bullet.remove = true;
+        object.hit(bullet.power);
+        bullet.remove();
     }
 
     private calculateObjectDamageFromBullet(bullet: BulletObject, object: BaseObject): void {
         if (object.health <= 0) {
-            object.remove = true;
+            object.remove();
         }
-    }
-
-    private roundToDecimal(number: number, decimal: number = 2): number {
-        const digit = Number(`1e${decimal}`);
-        return Math.round(number * digit) / digit;
     }
 }
 

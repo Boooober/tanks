@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { BaseObject } from './classes/base-object.class';
-import { BulletObject } from './classes/bullet-object.class';
 import { PlayerUnit } from './classes/player-unit.class';
+import { BulletObject } from './classes/bullet-object.class';
 import { GameObjectsRendererService } from './renderers/game-object-renderer.service';
-
 
 @Injectable()
 export class GameObjectsService {

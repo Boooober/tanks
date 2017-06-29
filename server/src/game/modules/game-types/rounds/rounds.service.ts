@@ -58,7 +58,7 @@ export class RoundsService {
     }
 
     private addUnits(): void {
-        return this.PlayersService.get().forEach(({ unit }) => this.GameObjectsService.addObject(unit));
+        return this.PlayersService.get().forEach(({ unit }) => this.GameObjectsService.add(unit));
     }
 }
 
