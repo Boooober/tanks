@@ -1,49 +1,28 @@
 import { NgModule } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
-import { UIRouterModule } from '@uirouter/angular';
-import { NouisliderModule } from 'ng2-nouislider';
+import { GameRoutingModule } from './game.routing.module';
 
-import { GameComponent } from './game.component';
-import { GameAreaComponent } from './layout/game-area/game-area.component';
-// import { InfoPanelComponent } from './layout/info-panel/info-panel.component';
-import { SidePanelComponent } from './layout/side-panel/side-panel.component';
-import { UnitInfoComponent } from './components/unit-info/unit-info.component';
-import { UsersControlsComponent } from './components/user-controls/user-controls.component';
-import { UsersStatisticsComponent } from './components/users-statistics/users-statistics.component';
-import { UiComponentsModule } from '../ui-components/ui-components.module';
+/** Core */
+import { AuthService } from './core/auth.service';
+import { AuthorizedGuard } from './core/guards/authorized.guard';
+import { CanDeactivateGuard } from './core/guards/can-deactivate.guard';
 
-import { PlayerUnitInfoModel } from './models/player-unit-info.model';
-
-import { GameRenderService } from './game-render.service';
-import { GameObjectsService } from './objects/game-objects.service';
-import { UserConnectionService } from './connection/user-connection.service';
-
-/* Routes */
-import { routes } from './game.routes';
+import { UserConnectionService } from './core/connection/user-connection.service';
 
 @NgModule({
-    declarations: [
-        GameComponent,
-        GameAreaComponent,
-        // InfoPanelComponent,
-        SidePanelComponent,
-        UnitInfoComponent,
-        UsersControlsComponent,
-        UsersStatisticsComponent
-    ],
     imports: [
+        HttpModule,
         FormsModule,
-        BrowserModule,
-        NouisliderModule,
-        UiComponentsModule,
-        UIRouterModule.forChild({ states: [...routes]})
+        CommonModule,
+        GameRoutingModule,
     ],
     providers: [
-        GameRenderService,
-        GameObjectsService,
-        PlayerUnitInfoModel,
+        AuthService,
+        AuthorizedGuard,
+        CanDeactivateGuard,
         UserConnectionService
     ]
 })

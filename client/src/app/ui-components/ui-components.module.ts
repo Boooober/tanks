@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+
+import { DialogService } from './dialog.service';
 
 import { TabsComponent } from './tabs/panel-tabs';
 import { TabButtonComponent } from './tabs/panel-tab-button';
@@ -12,7 +14,10 @@ import { TabContentComponent } from './tabs/panel-tab-content';
         TabContentComponent
     ],
     imports: [
-        BrowserModule,
+        CommonModule,
+    ],
+    providers: [
+        DialogService
     ],
     exports: [
         TabsComponent,

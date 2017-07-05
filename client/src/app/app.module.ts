@@ -1,12 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { APP_BASE_HREF } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { UIRouterModule } from '@uirouter/angular';
 import { GameModule } from './game/game.module';
-import { AuthFormModule } from './auth-forms/auth-forms.module';
+import { AppRoutingModule } from './app.routing.module';
 
 import { AppComponent } from './app.component';
-
-import { routes } from './app.routes';
 
 @NgModule({
     declarations: [
@@ -15,10 +13,13 @@ import { routes } from './app.routes';
     imports: [
         BrowserModule,
         GameModule,
-        AuthFormModule,
-        UIRouterModule.forRoot({ states: [...routes]})
+        AppRoutingModule
     ],
-    providers: [],
-    bootstrap: [AppComponent]
+    providers: [
+        { provide: APP_BASE_HREF, useValue: '/' }
+    ],
+    bootstrap: [
+        AppComponent
+    ]
 })
 export class AppModule {}
