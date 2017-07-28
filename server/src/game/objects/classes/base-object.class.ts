@@ -15,10 +15,11 @@ export class BaseObject extends ObjectBaseDTO {
     }
 
     hit(power: number): void {
-        const defence = this.getDefence();
-        const powerCoefficient = defence === 0 ? 1 : 1 / (0.5 * defence);
-
-        this.health -= power * powerCoefficient;
+        // const defence = this.getDefence();
+        // const powerCoefficient = defence === 0 ? 1 : 1 / (0.5 * defence);
+        //
+        // this.health -= power * powerCoefficient;
+        this.health -= power;
     }
 
     exists(): boolean {

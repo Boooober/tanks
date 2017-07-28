@@ -59,13 +59,15 @@ export class PlayersService {
 
     updateUnitInfo(sessionId: string, data?: any /* TODO PlayerUnitDTO */): void {
         const unit = this.getUnitInfo(sessionId);
-
         if (!unit) { return; }
 
         // TODO move logic to better place
-        if (data && data.hasOwnProperty('scale')) {
-            unit.updateModifier(new ScaleModifier({ scale: data.scale }));
-        }
+        // if (data && data.hasOwnProperty('scale')) {
+        //     console.log(unit);
+        //     console.log(data.scale);
+        //
+        //     unit.updateModifier(new ScaleModifier({ scale: data.scale }));
+        // }
 
         this.GameSessionsService.sendMessage(sessionId, 'unitUpdates', new PlayerUnitInfoDTO(unit));
     }

@@ -2,16 +2,18 @@ import { Modifier } from '../modifiers/modifier.class';
 import { MovingObject } from './moving-object.class';
 
 export const DEFAULT_UNIT_OPTIONS = {
-    speed: 2,
+    speed: 3,
     width: 32,
     height: 48,
     health: 100,
     defence: 1,
     maxHealth: 100,
-    rotateSpeed: 3,
-    attackSpeed: 2,
+    rotateSpeed: 4,
+    attackSpeed: 3,
     attackPower: 25,
+    resurrectTimeout: 5000,
     canAttack: true,
+    canResurrect: true,
     isAttacking: false,
 
     modifiers: {},
@@ -33,6 +35,9 @@ export class PlayerUnit extends MovingObject {
     public isAttacking: boolean;
     public attackSpeed: number;
     public attackPower: number;
+
+    public resurrectTimeout: number;
+    public canResurrect: boolean;
 
     public modifiers: { prop: Modifier[], all: Modifier[] };
 
@@ -59,6 +64,14 @@ export class PlayerUnit extends MovingObject {
             power: this.getAttackPower(),
             shooter: this
         }
+    }
+
+    resurrect(): void {
+        this.canResurrect = false;
+        this.generateRandomPosition();
+        setTimeout(() => {
+            this.canResurrect = true;
+        }, this.resurrectTimeout);
     }
 
     resetUnitHealth(): void {

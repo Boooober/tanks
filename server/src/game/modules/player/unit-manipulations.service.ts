@@ -60,7 +60,9 @@ export class UnitManipulationsService {
                     this.moveDown(unit, value);
                     break;
                 case KEY.R:
-                    if (value) { unit.generateRandomPosition(); }
+                    if (value && unit.canResurrect) {
+                        unit.resurrect();
+                    }
                     break;
             }
         }

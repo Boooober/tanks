@@ -2,11 +2,11 @@ import { MovingObject } from './moving-object.class';
 import { PlayerUnit } from './player-unit.class';
 
 export const DEFAULT_BULLET_OPTIONS = {
-    speed: 5,
+    speed: 10,
     width: 2,
     height: 10,
-    power: 25,
-    health: 25
+    power: 5,
+    health: 5
 };
 
 export class BulletObject extends MovingObject {
