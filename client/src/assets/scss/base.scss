@@ -6,3 +6,8 @@
   height: 100%;
   overflow: auto;
 }
+
+[disabled] {
+  opacity: .5;
+  pointer-events: none;
+}

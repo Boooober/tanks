@@ -1,0 +1,34 @@
+<div class="editor-toolbar">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-2">
+                <button class="btn btn-primary" (click)="toggleFreeDraw()">Toggle draw mode</button>
+            </div>
+            <div class="col-xs-2">
+                <ng2-select #textureSelect
+                            [placeholder]="'Choose texture'"
+                            [displayBy]="'label'"
+                            [selectedDisplayBy]="'label'"
+                            [identifyBy]="'value'"
+                            [options]="textures"
+                            [(ngModel)]="texture"
+                            [attr.disabled]="!isFreeDraw || null">
+                </ng2-select>
+            </div>
+            <div class="col-xs-2">
+                <ng2-select #objectSelect
+                            [placeholder]="'Select object'"
+                            [displayBy]="'label'"
+                            [selectedDisplayBy]="'label'"
+                            [identifyBy]="'value'"
+                            [options]="objects"
+                            [(ngModel)]="object"
+                            [attr.disabled]="isFreeDraw || null">
+                </ng2-select>
+            </div>
+            <div class="col-xs-2">
+                <a class="btn btn-primary" (click)="saveCanvas($event)">Save canvas</a>
+            </div>
+        </div>
+    </div>
+</div>

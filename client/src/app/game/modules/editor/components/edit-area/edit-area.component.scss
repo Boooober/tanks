@@ -1,0 +1,28 @@
+.edit-area{
+  position: relative;
+
+  &__layer {
+    &_foreground,
+    &_background {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    &_foreground {
+      z-index: 2;
+    }
+
+    &_background {
+      z-index: 1;
+    }
+
+    &_clicktrough {
+      pointer-events: none;
+    }
+  }
+
+  &__canvas {
+    display: block;
+  }
+}

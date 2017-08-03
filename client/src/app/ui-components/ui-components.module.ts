@@ -1,17 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule,  } from '@angular/core';
+import { CommonModule,  } from '@angular/common';
+
+
 
 import { DialogService } from './dialog.service';
 
-import { TabsComponent } from './tabs/panel-tabs';
-import { TabButtonComponent } from './tabs/panel-tab-button';
-import { TabContentComponent } from './tabs/panel-tab-content';
+import tabs from './tabs';
 
 @NgModule({
     declarations: [
-        TabsComponent,
-        TabButtonComponent,
-        TabContentComponent
+        tabs
     ],
     imports: [
         CommonModule,
@@ -20,9 +18,7 @@ import { TabContentComponent } from './tabs/panel-tab-content';
         DialogService
     ],
     exports: [
-        TabsComponent,
-        TabButtonComponent,
-        TabContentComponent
+        tabs
     ]
 })
 export class UiComponentsModule {}

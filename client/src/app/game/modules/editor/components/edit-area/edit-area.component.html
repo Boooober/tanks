@@ -1,0 +1,12 @@
+<app-edit-toolbar #toolbar></app-edit-toolbar>
+
+<div class="edit-area">
+    <div class="edit-area__layer_background">
+        <canvas #drawingCanvas class="edit-area__canvas"></canvas>
+    </div>
+
+    <div class="edit-area__layer_foreground"
+         [ngClass]="{ 'edit-area__layer_clicktrough': isDrawingModeEnabled() }">
+        <canvas #canvas class="edit-area__canvas"></canvas>
+    </div>
+</div>

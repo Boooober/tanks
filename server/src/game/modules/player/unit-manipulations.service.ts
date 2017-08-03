@@ -4,7 +4,7 @@ import { PlayerUnit } from '../../objects/classes/player-unit.class';
 import GameObject, { GameObjectsService } from '../../objects/game-objects.service';
 import GameObjectsCalculation, { GameObjectsCalculationsService } from '../../objects/game-objects-calculations.service';
 
-import { VIRTUAL_KEY_CODES as KEY } from './virtual-key-codes.constant';
+import { VIRTUAL_KEY_CODES as KEY } from '../../../../../common/constants/virtual-key-codes.constant';
 
 export class UnitManipulationsService {
     constructor(private GameObjectsService: GameObjectsService,

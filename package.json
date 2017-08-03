@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "server": "webpack --config server/webpack.config.js && node build/main.js",
-    "mongodb": "mongod --config \"C:/Program Files/MongoDB/Server/3.4/bin/mongodb.config\""
+    "mongodb": "mongod --config \"C:/Program Files/MongoDB/Server/3.4/bin/mongodb.config\"",
+    "postinstall": "rimraf ./node_modules/ng2-material-select/dist/node_modules/ng2-material-dropdown/"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +24,7 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "@types/fabric": "^1.5.25",
     "@types/ws": "3.0.0",
     "@uirouter/angular": "^1.0.0-beta.7",
     "bcrypt-nodejs": "0.0.3",
@@ -32,6 +34,7 @@
     "injection-js": "^2.1.0",
     "mongodb": "^2.2.29",
     "mongoose": "^4.11.0",
+    "ng2-material-select": "^0.1.8",
     "ng2-nouislider": "^1.6.1",
     "nouislider": "^10.0.0",
     "q": "^1.5.0",
@@ -55,6 +58,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
+    "rimraf": "^2.6.1",
     "ts-loader": "^2.2.0",
     "ts-node": "~3.1.0",
     "tslint": "~5.4.3",

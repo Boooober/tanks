@@ -14,6 +14,11 @@ const routes: Routes = [
         canActivate: [AuthorizedGuard]
     },
     {
+        path: 'editor',
+        loadChildren: 'app/game/modules/editor/editor.module#EditorModule',
+        // canActivate: [AuthorizedGuard]
+    },
+    {
         path: '',
         pathMatch: 'full',
         redirectTo: '/auth/login'

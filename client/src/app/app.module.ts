@@ -1,4 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { APP_BASE_HREF } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { GameModule } from './game/game.module';
@@ -12,6 +14,7 @@ import { AppComponent } from './app.component';
     ],
     imports: [
         BrowserModule,
+        NoopAnimationsModule,
         GameModule,
         AppRoutingModule
     ],

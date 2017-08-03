@@ -9,9 +9,9 @@ import { GameAreaRoutingModule, gameAreaRoutingComponents } from './game-area.ro
 
 import { PlayerUnitInfoModel } from '../../models/player-unit-info.model';
 
-import { SidePanelComponent } from './side-panel/side-panel.component';
-import { PlaygroundComponent } from './playground/playground.component';
 import { UnitInfoComponent } from './components/unit-info/unit-info.component';
+import { SidePanelComponent } from './components/side-panel/side-panel.component';
+import { PlaygroundComponent } from './components/playground/playground.component';
 import { UsersControlsComponent } from './components/user-controls/user-controls.component';
 import { UsersStatisticsComponent } from './components/users-statistics/users-statistics.component';
 

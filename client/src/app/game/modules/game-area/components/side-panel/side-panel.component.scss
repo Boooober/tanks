@@ -1,0 +1,84 @@
+@import '../../../../../../assets/scss/variables';
+@import '../../../../../../assets/scss/buttons';
+
+.app-side-panel {
+    position: fixed;
+    transition: .5s;
+    color: white;
+
+    &-header {
+        position: absolute;
+        width: 100%;
+        height: 60px;
+        padding: 15px;
+        background: $panel_color;
+    }
+
+    &-container {
+        height: 100%;
+        padding-top:60px;
+        background: $panel_color;
+    }
+
+    &__content {
+        height: 100%;
+        padding: 10px 20px;
+        overflow: auto;
+    }
+
+    &__toggle {
+        transition: .7s;
+        display: inline-block;
+    }
+
+    &__control {
+        transition: .5s;
+        margin-right: 5px;
+        @include round-btn(30px, 5px);
+    }
+
+    &__control-icon {
+        font-size: 16px;
+    }
+
+    @media(max-width: $max-media-md) {
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 50%;
+
+        &_opened {
+            transform: translateY(-100%) ;
+            .app-side-panel__toggle {
+                transform: translateX(0) rotate(0.75turn);
+            }
+        }
+
+        &__toggle {
+            transform: translateY(-60px) rotate(0.25turn);
+        }
+    }
+
+    @media(min-width: $min-media-lg) {
+        top: 0;
+        left: 100%;
+        width: 500px;
+        height: 100%;
+
+        &_opened {
+            transform: translateX(-100%);
+            .app-side-panel__toggle {
+                transform: translateX(0) rotate(0.5turn);
+            }
+        }
+
+        &__toggle {
+            transform: translateX(-60px);
+        }
+    }
+}
+
+/deep/ .active .app-side-panel__control {
+    background: white;
+    color: black;
+}
