@@ -1,0 +1,12 @@
+<div class="app-charts gray-bg">
+    <ng2-select #select
+                [placeholder]="'Choose attribute'"
+                [displayBy]="'labelY'"
+                [selectedDisplayBy]="'labelY'"
+                [identifyBy]="'labelY'"
+                [options]="options"
+                [(ngModel)]="selected">
+    </ng2-select>
+    <svg #bars></svg>
+    <svg #pie></svg>
+</div>

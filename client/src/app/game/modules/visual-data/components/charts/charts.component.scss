@@ -1,0 +1,30 @@
+@import '../../../../../../assets/scss/variables';
+@import '../../../../../../assets/scss/base';
+
+.app-charts {
+  @extend .fullpage;
+  padding: 15px;
+}
+
+/deep/.axis path,
+/deep/.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+/deep/.x.axis path {
+  display: none;
+}
+
+/deep/.axis text {
+  fill: black;
+}
+
+/deep/.bar {
+  fill: $c_primary;
+  &:hover {
+    fill: $c_info;
+  }
+}
+

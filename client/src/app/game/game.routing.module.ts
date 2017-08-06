@@ -19,6 +19,11 @@ const routes: Routes = [
         // canActivate: [AuthorizedGuard]
     },
     {
+        path: 'charts',
+        loadChildren: 'app/game/modules/visual-data/visual-data.module#VisualDataModule',
+        // canActivate: [AuthorizedGuard]
+    },
+    {
         path: '',
         pathMatch: 'full',
         redirectTo: '/auth/login'
