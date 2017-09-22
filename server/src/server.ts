@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 import setupEndpoints from './features/setup-endpoints';
-import TheGame from './game/the-game';
+import TheGame from './game';
 
 
 const app = express();

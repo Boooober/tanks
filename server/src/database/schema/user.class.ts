@@ -1,5 +1,8 @@
-import { PlayerStatistics } from '../../game/classes/player-statistics.class';
-import { PlayerUnit, DEFAULT_UNIT_OPTIONS } from '../../game/objects/classes/player-unit.class';
+import {
+    PlayerUnit,
+    DEFAULT_UNIT_OPTIONS,
+    PlayerStatistics
+} from 'Core';
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');

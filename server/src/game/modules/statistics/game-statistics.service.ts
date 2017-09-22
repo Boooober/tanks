@@ -1,11 +1,15 @@
+import { Injectable } from 'injection-js';
+import {
+    BaseObject,
+    PlayerUnit,
+    BulletObject,
+    PlayerStatistics,
+    GameEventsService
+} from 'Core';
 import { UserModel } from '../../../database/database';
-import { BaseObject } from '../../objects/classes/base-object.class';
-import { PlayerUnit } from '../../objects/classes/player-unit.class';
-import { BulletObject } from '../../objects/classes/bullet-object.class';
-import { PlayerStatistics } from '../../classes/player-statistics.class';
 
-import GameEventsService from '../../game-events.service';
 
+@Injectable()
 export class GameStatisticsService {
     static onShooting(unit: PlayerUnit) {
         UserModel.incrementStats(unit.objectId, { totalShoots: 1 } as PlayerStatistics);
@@ -26,12 +30,13 @@ export class GameStatisticsService {
         UserModel.incrementStats(bullet.shooter.objectId, { score: 1 } as PlayerStatistics);
     }
 
+    constructor(private gameEventsService: GameEventsService) {
+    }
+
     init() {
-        GameEventsService.on('shooting', GameStatisticsService.onShooting);
-        GameEventsService.on('bulletCollision', GameStatisticsService.onBulletCollisions);
-        GameEventsService.on('bulletPlayerCollision', GameStatisticsService.onBulletPlayerCollisions);
-        GameEventsService.on('bulletLethalCollision', GameStatisticsService.onBulletLethalCollision);
+        this.gameEventsService.on('shooting', GameStatisticsService.onShooting);
+        this.gameEventsService.on('bulletCollision', GameStatisticsService.onBulletCollisions);
+        this.gameEventsService.on('bulletPlayerCollision', GameStatisticsService.onBulletPlayerCollisions);
+        this.gameEventsService.on('bulletLethalCollision', GameStatisticsService.onBulletLethalCollision);
     }
 }
-
-export default new GameStatisticsService;

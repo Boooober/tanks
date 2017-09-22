@@ -14,11 +14,11 @@ export class UserConnectionService {
     private socket: WebSocket;
     private subject$ = new Subject();
 
-    constructor(private AuthService: AuthService) {
+    constructor(private authService: AuthService) {
         this.connect();
     }
 
-    getStream(): Observable<[string, any]> {
+    getStream(): Observable<any> {
         return this.subject$.asObservable();
     }
 
@@ -75,7 +75,7 @@ export class UserConnectionService {
     }
 
     private sendPlayer(): void {
-        const player = this.AuthService.getPlayer();
+        const player = this.authService.getPlayer();
         this.sendMessage('user', player);
     }
 }

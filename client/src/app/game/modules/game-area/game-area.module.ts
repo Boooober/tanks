@@ -3,7 +3,7 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { NouisliderModule } from 'ng2-nouislider';
+// import { NouisliderModule } from 'ng2-nouislider';
 import { UiComponentsModule } from '../../../ui-components/ui-components.module';
 import { GameAreaRoutingModule, gameAreaRoutingComponents } from './game-area.routing.module';
 
@@ -31,7 +31,7 @@ import { GameObjectsService } from './objects/game-objects.service';
         HttpModule,
         FormsModule,
         CommonModule,
-        NouisliderModule,
+        // NouisliderModule,
         UiComponentsModule,
         GameAreaRoutingModule
     ],
