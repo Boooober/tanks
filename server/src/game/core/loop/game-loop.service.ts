@@ -14,7 +14,7 @@ export class GameLoopService {
                 private gameSessionsService: GameSessionsService) {
     }
 
-    create(): Timer {
+    create(): any {
         return setInterval(() => this.tick(), GameLoopService.FPS);
     }
 

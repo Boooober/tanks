@@ -7,7 +7,7 @@ import { PlayerUnit } from '../../modules/game-area/objects/classes/player-unit.
 import { BaseObject } from '../../modules/game-area/objects/classes/base-object.class';
 import { AuthService } from '../auth.service';
 
-import { WEBSOCKET_ADDRESS } from '../../../../../../config/config';
+import { getWebsocket } from '../../../../../../config';
 
 @Injectable()
 export class UserConnectionService {
@@ -64,7 +64,7 @@ export class UserConnectionService {
     }
 
     private connect(): void {
-        this.socket = new WebSocket(WEBSOCKET_ADDRESS);
+        this.socket = new WebSocket(getWebsocket());
         this.socket.onopen = () => this.sendPlayer();
         this.socket.onmessage = event => this.onMessage(event);
     }

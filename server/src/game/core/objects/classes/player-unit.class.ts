@@ -47,7 +47,7 @@ export class PlayerUnit extends MovingObject {
 
     public modifiers: any;
 
-    private resurrectTimer: NodeJS.Timer;
+    private resurrectTimer: number;
 
     constructor(...options: Array<any>) {
         super();

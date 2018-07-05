@@ -1,9 +1,9 @@
-import { MONGO_DATABASE } from '../../../config/config';
+import { getMongo } from '../../../config';
 export { UserModel } from './schema/user.class';
 
 const mongoose = require('mongoose');
 
-mongoose.connect(MONGO_DATABASE);
+mongoose.connect(getMongo());
 export const DB = mongoose.connection;
 
 DB.once('open', () => {

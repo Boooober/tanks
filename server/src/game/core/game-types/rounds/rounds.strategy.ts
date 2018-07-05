@@ -1,4 +1,4 @@
-const Q = require('q');
+import * as Q from 'q';
 import { Injectable } from 'injection-js';
 import { RoundsService } from './rounds.service';
 import { IGameType } from '../game-type.interface';
