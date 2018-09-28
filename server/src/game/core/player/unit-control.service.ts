@@ -5,9 +5,9 @@ import {
     BulletObject,
     GameObjectsService,
     GameObjectsCalculationsService
-} from 'Core';
+} from '../';
 
-import { KEYBOARD_CODES as KEY } from 'Constants';
+import { KEYBOARD_CODES as KEY } from '../../constants';
 
 
 @Injectable()

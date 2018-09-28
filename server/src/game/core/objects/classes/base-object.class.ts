@@ -1,4 +1,4 @@
-import { ObjectBaseDTO } from 'Common';
+import { ObjectBaseDTO } from '../../../../../../common';
 
 
 export class BaseObject extends ObjectBaseDTO {

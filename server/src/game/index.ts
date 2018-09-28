@@ -1,4 +1,4 @@
-import Loader from 'Loader';
+import Loader from '../loader';
 
 import {
     GameLoopService,
@@ -17,12 +17,12 @@ import {
     DeathmatchStrategy,
     DeathmatchStatisticsService,
     DeathSalvationMode
-} from 'Core';
+} from './core';
 
 import {
     LogService,
     GameStatisticsService
-} from 'Modules';
+} from './modules';
 
 Loader.addProviders([
     GameLoopService,

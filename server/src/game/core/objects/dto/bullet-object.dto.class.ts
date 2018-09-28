@@ -1,5 +1,5 @@
-import { BulletObject } from 'Core';
-import { BulletObjectBaseDTO } from 'Common';
+import { BulletObject } from '../';
+import { BulletObjectBaseDTO } from '../../../../../../common';
 
 
 export class BulletObjectDTO extends BulletObjectBaseDTO {

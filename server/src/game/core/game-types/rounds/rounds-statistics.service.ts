@@ -2,7 +2,7 @@ import { Injectable } from 'injection-js';
 import {
     PlayerStatistics,
     GameEventsService
-} from 'Core';
+} from '../../';
 import { StatisticsAbstract } from '../statistics.abstract';
 
 

@@ -3,7 +3,7 @@ import {
     BaseObject,
     PlayerUnit,
     BulletObject
-} from 'Core';
+} from '../';
 
 import { BulletObjectDTO } from './dto/bullet-object.dto.class';
 import { PlayerUnitObjectDTO } from './dto/player-unit-object.dto.class';

@@ -1,7 +1,7 @@
 import {
     PlayerUnit,
     PlayerStatistics
-} from 'Core';
+} from '../../';
 
 
 export class Player {

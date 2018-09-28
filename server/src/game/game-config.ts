@@ -3,7 +3,7 @@ import {
     RoundsStrategy,
     DeathmatchStrategy,
     DeathSalvationMode
-} from 'Core';
+} from './core';
 
 import { CONFIG, TYPES, MODES } from './config/game.config';
 import { IGameType } from './core/game-types/game-type.interface';

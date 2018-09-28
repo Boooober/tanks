@@ -13,7 +13,7 @@ fs.readdirSync('node_modules')
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     target: 'node',
-    entry: './server.ts',
+    entry: './',
     output: {
         path: path.resolve(__dirname, '../build/'),
         filename: '[name].js',
@@ -32,11 +32,7 @@ module.exports = {
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
         alias: {
-            Loader: path.resolve(__dirname, 'src/loader'),
-            Core: path.resolve(__dirname, 'src/game/core'),
-            Common: path.resolve(__dirname, '../common'),
             Modules: path.resolve(__dirname, 'src/game/modules'),
-            Constants: path.resolve(__dirname, 'src/game/constants')
         }
     }
 };

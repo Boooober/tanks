@@ -5,7 +5,7 @@ import {
     GameLoopService,
     GameObjectsService,
     GameSessionsService
-} from 'Core';
+} from '../../';
 import { RoundsStatisticsService } from './rounds-statistics.service';
 
 

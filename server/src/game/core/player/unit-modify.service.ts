@@ -1,5 +1,5 @@
 import { Injectable } from 'injection-js';
-import { PlayerUnit } from 'Core';
+import { PlayerUnit } from '../';
 import { Modifier } from '../objects/modifiers/modifier.class';
 
 

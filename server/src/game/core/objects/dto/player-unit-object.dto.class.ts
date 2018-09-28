@@ -1,5 +1,5 @@
-import { PlayerUnit } from 'Core';
-import { PlayerUnitObjectBaseDTO } from 'Common';
+import { PlayerUnit } from '../';
+import { PlayerUnitObjectBaseDTO } from '../../../../../../common';
 
 
 export class PlayerUnitObjectDTO extends PlayerUnitObjectBaseDTO {

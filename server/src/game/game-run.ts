@@ -2,8 +2,8 @@ const WS = require('ws');
 const http = require('http');
 import * as WebSocket from 'ws';
 import { Injectable } from 'injection-js';
-import { GameSessionsService } from 'Core';
-import { GameStatisticsService } from 'Modules'
+import { GameSessionsService } from './core';
+import { GameStatisticsService } from './modules'
 
 import { GameConfigService } from './game-config';
 import setupGameEndpoints from './endpoints/setup-game-endpoints';

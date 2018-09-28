@@ -5,7 +5,7 @@ import {
     BulletObject,
     PlayerStatistics,
     GameEventsService
-} from 'Core';
+} from '../../core';
 import { UserModel } from '../../../database/database';
 
 

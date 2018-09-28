@@ -3,7 +3,7 @@ import { Injectable } from 'injection-js';
 import {
     GameObjectsService,
     GameSessionsService
-} from 'Core';
+} from '../';
 
 
 @Injectable()

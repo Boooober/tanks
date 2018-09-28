@@ -1,5 +1,5 @@
 import { Injectable } from 'injection-js';
-import { GameEventsService } from 'Core';
+import { GameEventsService } from '../../core';
 
 
 @Injectable()

@@ -3,7 +3,7 @@ import { Injectable } from 'injection-js';
 import {
     GameEventsService,
     GameActionsService
-} from 'Core';
+} from '../';
 
 
 @Injectable()

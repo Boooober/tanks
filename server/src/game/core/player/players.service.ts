@@ -4,7 +4,7 @@ import {
     PlayerUnit,
     GameEventsService,
     GameActionsService
-} from 'Core';
+} from '../';
 
 import { GameSessionsService } from './game-sessions.service';
 import { UnitControlService } from './unit-control.service';

@@ -3,7 +3,7 @@ import { Injectable } from 'injection-js';
 import {
     GameLoopService,
     GameSessionsService,
-} from 'Core';
+} from '../../';
 import { DeathmatchStatisticsService } from './deathmatch-statistics.service';
 
 

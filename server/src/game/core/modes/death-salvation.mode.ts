@@ -3,7 +3,7 @@ import {
     BaseObject,
     BulletObject,
     GameEventsService
-} from 'Core';
+} from '../';
 
 export const MAX_HEALTH_LIMIT = 100; // should be configured from unit
 

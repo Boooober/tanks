@@ -2,7 +2,7 @@ import {
     PlayerUnit,
     DEFAULT_UNIT_OPTIONS,
     PlayerStatistics
-} from 'Core';
+} from '../../game/core';
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');

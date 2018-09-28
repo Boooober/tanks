@@ -1,19 +1,25 @@
 import 'reflect-metadata';
-const express = require('express');
-const bodyParser = require('body-parser');
+import * as express from 'express';
+import * as cors from 'cors';
 
-import setupEndpoints from './features/setup-endpoints';
+import api from './api';
 import TheGame from './game';
 
+export const PORT = 8080;
 
-const app = express();
+export default (): express.Express => {
+    const server: express.Express = express();
 
-app.use(bodyParser());
-app.use(express.static('build/client'));
+    server.use(cors());
+    server.use(express.urlencoded());
+    server.use(express.json());
+    server.use(api(server));
 
-TheGame.init(app);
-setupEndpoints(app);
+    TheGame.init(server);
 
-app.listen(8080, () => {
-    console.log('Server started :)');
-});
+    server.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}!`);
+    });
+
+    return server;
+};

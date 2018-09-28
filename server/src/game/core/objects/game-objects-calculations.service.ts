@@ -4,7 +4,7 @@ import {
     PlayerUnit,
     BulletObject,
     GameEventsService
-} from 'Core';
+} from '../';
 
 
 @Injectable()

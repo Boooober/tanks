@@ -5,7 +5,7 @@ import {
     PlayerUnit,
     BaseObject,
     BulletObject
-} from 'Core';
+} from '../';
 
 interface IGameEventsService {
     on(type: 'shooting', listener: (unit: PlayerUnit) => void): this;

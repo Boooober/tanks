@@ -85,7 +85,7 @@ export class PlayerUnit extends MovingObject {
         clearTimeout(this.resurrectTimer);
         this.resurrectTimer = setTimeout(() => {
             this.canResurrect = true;
-        }, this.resurrectTimeout);
+        }, this.resurrectTimeout) as any;
     }
 
     resetUnitHealth(): void {
