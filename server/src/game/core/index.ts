@@ -6,4 +6,3 @@ export { GameLoopService } from './loop/game-loop.service';
 
 export * from './game-types';
 export * from './modes';
-

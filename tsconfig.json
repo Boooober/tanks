@@ -1,8 +1,7 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-        "outDir": "./build/out-tsc",
-        "baseUrl": "./client/src",
+        "outDir": "./dist/out-tsc",
         "sourceMap": true,
         "declaration": false,
         "moduleResolution": "node",
@@ -10,10 +9,11 @@
         "experimentalDecorators": true,
         "target": "es5",
         "typeRoots": [
+            "./typings",
             "node_modules/@types"
         ],
         "lib": [
-            "es2016",
+            "es2017",
             "dom"
         ]
     }

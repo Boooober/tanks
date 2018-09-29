@@ -4,7 +4,7 @@ import { registerUser } from './authentication.service';
 
 export default Router()
     .post('/signin', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        const { name: username, password } = req.body;
+        const { username, password } = req.body;
 
         try {
             return res

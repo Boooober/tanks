@@ -1,0 +1,6 @@
+@import '../../../../assets/scss/base';
+
+.app-signin {
+  @extend .fullpage;
+  padding: 30px 0;
+}

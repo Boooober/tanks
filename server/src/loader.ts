@@ -19,4 +19,4 @@ class Loader {
     }
 }
 
-export default new Loader;
+export default new Loader();

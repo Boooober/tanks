@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { BackgroundPreloading } from './loading-strategies/background.preloading';
+import { BackgroundPreloading } from './core/loading-strategies/background.preloading';
 
 const routes: Routes = [];
 

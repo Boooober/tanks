@@ -11,6 +11,7 @@ import setupGameEndpoints from './endpoints/setup-game-endpoints';
 
 @Injectable()
 export class GameRunService {
+
     constructor(private gameConfigService: GameConfigService,
                 private gameSessionsService: GameSessionsService,
                 private gameStatisticsService: GameStatisticsService) {
