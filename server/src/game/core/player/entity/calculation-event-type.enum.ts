@@ -1,0 +1,6 @@
+export enum CalculationEventType {
+    SHOOTING,
+    BULLET_COLLISION,
+    BULLET_PLAYER_COLLISION,
+    BULLET_LETHAL_COLLISION
+}

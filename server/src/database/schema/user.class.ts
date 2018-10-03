@@ -1,14 +1,9 @@
-import {
-    PlayerUnit,
-    DEFAULT_UNIT_OPTIONS,
-    PlayerStatistics
-} from '../../game/core';
+import { model, Schema } from 'mongoose';
+import * as bcrypt from 'bcrypt-nodejs';
 
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt-nodejs');
-const { Schema } = mongoose;
+import { DEFAULT_UNIT_OPTIONS, PlayerStatistics, PlayerUnit } from '../../game/core/player/entity';
 
-const User = new Schema({
+const user = new Schema({
     name: { type: String, required: true, unique: true },
     email: { type: String, required: false,  },
     password: { type: String, required: true },
@@ -31,30 +26,30 @@ const User = new Schema({
     }
 });
 
-function noop() {}
+function noop(): void {}
 
-User.methods.hashPassword = function (password: string): string {
+user.methods.hashPassword = function(password: string): string {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 };
 
-User.methods.validatePassword = function(password: string): string {
+user.methods.validatePassword = function(password: string): string {
     return bcrypt.compareSync(password, this.password);
 };
 
-User.statics.saveObject = function(userId: string, object: PlayerUnit, callback: Function): void {
+user.statics.saveObject = function(userId: string, object: PlayerUnit, callback: (...args: any[]) => any): void {
     const { speed, width, height, health, attackPower, attackSpeed, rotateSpeed, color } = object;
     const unit = { speed, width, height, health, attackPower, attackSpeed, rotateSpeed, color };
     this.update({ _id: userId }, { $set: { unit } }, { upsert: true }, (e, u) => (callback || noop)(e, u));
 };
 
-User.statics.incrementStats = function(userId: string, data: PlayerStatistics, callback: Function): void {
-    const statistics = Object.keys(data).reduce((stats: Object, key: string): Object => {
+user.statics.incrementStats = function(userId: string, data: PlayerStatistics, callback: (...args: any[]) => any): void {
+    const statistics = Object.keys(data).reduce((stats: object, key: string): object => {
         stats[`statistics.${key}`] = data[key];
         return stats;
     }, {});
     this.update({ _id: userId }, { $inc: statistics }, { upsert: true }, (e, u) => (callback || noop)(e, u));
 };
 
-User.path('password').validate(pass => pass.length > 5 && pass.length < 70);
+user.path('password').validate((password: string) => password.length > 5 && password.length < 70);
 
-export const UserModel = mongoose.model('User', User);
+export const UserModel = model('User', user);

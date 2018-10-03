@@ -1,25 +1,23 @@
 import { Injectable } from 'injection-js';
-import {
-    RoundsStrategy,
-    DeathmatchStrategy,
-    DeathSalvationMode
-} from './core';
 
 import { CONFIG, TYPES, MODES } from './config/game.config';
-import { IGameType } from './core/game-types/game-type.interface';
-
+import { IGameType } from './game-types/game-type.interface';
+import { DeathmatchStrategy, RoundsStrategy } from './game-types';
+import { DeathSalvationMode } from './modes';
 
 @Injectable()
 export class GameConfigService {
     private strategy: IGameType | null = null;
-    private strategyConfig: Object = {};
+    private strategyConfig: any = {};
 
-    private modesList = {};
-    private strategiesList = {};
+    private modesList: any = {};
+    private strategiesList: any = {};
 
-    constructor(private roundsStrategy: RoundsStrategy,
-                private deathmatchStrategy: DeathmatchStrategy,
-                private deathSalvationMode: DeathSalvationMode) {
+    constructor(
+        roundsStrategy: RoundsStrategy,
+        deathmatchStrategy: DeathmatchStrategy,
+        deathSalvationMode: DeathSalvationMode
+    ) {
         /** Setup modes patch */
         this.modesList[MODES.DEATH_SALVATION] = deathSalvationMode;
 
@@ -28,7 +26,7 @@ export class GameConfigService {
         this.strategiesList[TYPES.DEATHMATCH] = deathmatchStrategy;
     }
 
-    init() {
+    init(): void {
         this.setStrategy(
             this.strategiesList[CONFIG.gameType.strategy],
             CONFIG.gameType.config
@@ -37,7 +35,7 @@ export class GameConfigService {
         this.start();
     }
 
-    setStrategy(strategy: IGameType, config: Object = {}) {
+    setStrategy(strategy: IGameType, config: object = {}): void {
         this.strategy = strategy;
         this.strategyConfig = config;
     }

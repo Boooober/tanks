@@ -4,6 +4,7 @@ import { filter, map } from 'rxjs/internal/operators';
 
 import { StreamData } from './entity';
 import { getWebsocket } from '../../../../../config';
+import { SocketCommand } from '../../../../../common/socket-command.enum';
 
 export const ON_SOCKET_CONNECTED = new InjectionToken('ON_SOCKET_CONNECTED');
 
@@ -21,7 +22,7 @@ export class SocketConnection {
         this.connect();
     }
 
-    get<T>(action?: string): Observable<T> {
+    get<T>(action?: SocketCommand): Observable<T> {
         return this.subject$.pipe(
             filter((data: StreamData) => action ? data.action === action : true),
             map((data: StreamData) => data.payload)

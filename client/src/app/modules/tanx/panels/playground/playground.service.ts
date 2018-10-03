@@ -5,6 +5,7 @@ import { SocketConnection } from '../../../../core/socket/socket-connection';
 import { StreamData } from '../../../../core/socket/entity';
 
 import { BaseObject } from '../../entity/base-object';
+import { SocketCommand } from '../../../../../../../common/socket-command.enum';
 
 @Injectable()
 export class PlaygroundService {
@@ -18,7 +19,7 @@ export class PlaygroundService {
 
     subscribe(callback: (objects: BaseObject[]) => void): void {
         this.objectsSubscription = this.socketConnection
-            .get('objectUpdates')
+            .get(SocketCommand.OBJECT_UPDATES)
             .subscribe(callback);
     }
 
@@ -32,7 +33,7 @@ export class PlaygroundService {
             this.commandsCache[keyCode] = true;
             this.socketConnection.send(
                 new StreamData(
-                    'unitAction',
+                    SocketCommand.UNIT_ACTION,
                     { action: keyCode.toString(), value: true }
                 )
             );
@@ -45,7 +46,7 @@ export class PlaygroundService {
             this.commandsCache[keyCode] = false;
             this.socketConnection.send(
                 new StreamData(
-                    'unitAction',
+                    SocketCommand.UNIT_ACTION,
                     { action: keyCode.toString(), value: false }
                 )
             );

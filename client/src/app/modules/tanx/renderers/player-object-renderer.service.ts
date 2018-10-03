@@ -36,7 +36,7 @@ export class PlayerObjectsRendererService {
         context.beginPath();
         context.font = USERNAME_FONT;
         context.fillStyle = USERNAME_FONT_STYLE;
-        const text = playerUnit.username;
+        const text = playerUnit.name;
         const textX = playerUnit.centerX - context.measureText(text).width / 2;
         const textY = playerUnit.y + USERNAME_OFFSET;
         context.fillText(text, textX, textY);

@@ -13,7 +13,7 @@ export class PlayerUnitInfoModel extends BaseModel {
     }
 
     getUsername(): string {
-        return this.get().username;
+        return this.get().name;
     }
 
     getDimensions(): [number, number] {

@@ -1,0 +1,13 @@
+export enum UnitActionType {
+    NONE,
+    START_MOVE_UP,
+    START_MOVE_DOWN,
+    START_MOVE_LEFT,
+    START_MOVE_RIGHT,
+    STOP_MOVE_UP,
+    STOP_MOVE_DOWN,
+    STOP_MOVE_LEFT,
+    STOP_MOVE_RIGHT,
+    SHOOTING,
+    RESURRECT
+}

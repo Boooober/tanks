@@ -4,7 +4,7 @@ export class PlayerUnitInfoBaseDTO {
     public height: number;
     public health: number;
     public defence: number;
-    public username: string;
+    public name: string;
     public maxHealth: number;
     public rotateSpeed: number;
     public attackSpeed: number;

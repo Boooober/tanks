@@ -29,7 +29,6 @@
                 "multiline": "never"
             }
         },
-        "interface-name": [true, "never-prefix"],
         "semicolon": [true, "always"],
         "ordered-imports": false,
         "object-literal-sort-keys": false,
